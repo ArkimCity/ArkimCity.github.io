@@ -1,0 +1,11 @@
+{% if site.tag_archive.type and page.tags[0] %}
+  {% include tag-list.html %}
+{% endif %}
+
+{% if site.category_archive.type and page.categories[0] %}
+  {% include category-list.html %}
+{% endif %}
+
+{% if site.language_archive.type and page.languages[0] %}
+  {% include language-list.html %}
+{% endif %}
