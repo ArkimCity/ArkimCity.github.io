@@ -10,7 +10,7 @@ languages: SQL
 
 
 ```SQL
--- stulist
+-- stulist 테이블 생성 ----------------------------------
 drop table stulist;
 
 create table stulist(
@@ -32,9 +32,11 @@ insert all
 select * from dual;
 
 select * from stulist;
+-----------------------------------
 
 
--- cash 테이블 생성
+
+-- cash 테이블 생성 ----------------------------------
 drop table cash;
 
 create table cash(
@@ -53,9 +55,11 @@ insert all
 select * from dual;
 
 select * from cash;
+--------------------------------------------------------------------
 
 
--- grades 테이블 생성
+
+-- grades 테이블 생성 ----------------------------------
 drop table grades;
 
 create table grades(
@@ -70,9 +74,11 @@ insert into grades(grade, minscore , maxscore) values('C', 50, 69);
 insert into grades(grade, minscore , maxscore) values('D', 0, 49);
 
 select * from grades order by grade asc;
+--------------------------------------------------------------------
 
 
---plagiarisms 테이블 생성
+
+--plagiarisms 테이블 생성 ----------------------------------
 drop table plagiarisms;
 
 CREATE table plagiarisms(
@@ -88,6 +94,8 @@ INSERT INTO plagiarisms(penalty, minp, maxp) values(0 , 0, 69);
 SELECT *
 FROM plagiarisms
 ORDER BY maxp ASC;
+--------------------------------------------------------------------
+
 
 
 --Q1.alt stulist랑 cash 테이블만 사용해 점수를 계산해서 점수를 출력해보시오.
