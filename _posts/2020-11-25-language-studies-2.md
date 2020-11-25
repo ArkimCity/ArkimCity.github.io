@@ -1,6 +1,6 @@
 ---
 title: "Language Study - SQL - 2. 내가 보려고 만든 기본 문법 정리 1"
-date: 2020-11-24
+date: 2020-11-25
 categories: LanguageStudies
 tags: SQL
 languages: SQL
