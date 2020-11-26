@@ -58,6 +58,7 @@ create table emp03(
 3. 추후 삽입
 
 1. 이름 지정
+
 ```sql
 drop table emp02;
 
@@ -69,6 +70,7 @@ create table emp02(
     constraint emp02_deptno_fk foreign key (deptno) references dept(deptno)
 );
 ```
+
 ```sql
 drop table emp02;
 
