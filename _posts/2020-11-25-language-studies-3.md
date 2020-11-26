@@ -11,7 +11,7 @@ languages: SQL
 
 
 stulist 테이블 생성 
-```SQL
+```sql
 drop table stulist;
 
 create table stulist(
@@ -24,7 +24,7 @@ create table stulist(
 ```
 
 stulist 데이터 삽입
-```SQL
+```sql
 insert all
 	into stulist(id, name, score, plagiarism) values(1, '김재웅', 75, 90)
 	into stulist(id, name, score, plagiarism) values(2, '이정민', 68, 10)
@@ -41,7 +41,7 @@ select * from stulist;
 
 
 -- cash 테이블 생성 
-```SQL
+```sql
 drop table cash;
 
 create table cash(
@@ -52,7 +52,7 @@ create table cash(
 ```
 
 -- cash 테이블에 데이터 삽입
-```SQL
+```sql
 insert all
 	into cash(id, money, plus) values(1, 'TRUE', 20)
     into cash(id, money, plus) values(2, 'TRUE', 20)
@@ -68,7 +68,7 @@ select * from cash;
 
 
 -- grades 테이블 생성 및 데이터 삽입
-```SQL
+```sql
 drop table grades;
 
 create table grades(
@@ -88,7 +88,7 @@ select * from grades order by grade asc;
 
 
 --plagiarisms 테이블 생성 및 데이터 삽입
-```SQL
+```sql
 drop table plagiarisms;
 
 CREATE table plagiarisms(
@@ -111,7 +111,7 @@ ORDER BY maxp ASC;
 --Q1.alt stulist랑 cash 테이블만 사용해 점수를 계산해서 점수를 출력해보시오.
 
 --A1.
-```SQL
+```sql
 select s.SCORE + nvl(c.PLUS,0)
 from stulist s, cash c
 where s.ID=c.ID(+);
@@ -121,7 +121,7 @@ where s.ID=c.ID(+);
 --Q2. stulist, cash, plagiarisms 테이블을 사용해서 총점을 계산하고 등급을 도출해서 (id, 이름, 최종점수, grade) 를 출력해보시오.
 
 --A2.
-```SQL
+```sql
 select id, name, score2, grade
 from 
 (select s.SCORE + nvl(c.PLUS,0) + penalty as score2, name, s.id

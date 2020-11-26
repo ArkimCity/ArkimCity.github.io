@@ -10,7 +10,7 @@ languages: SQL
 
 대표 제약 사항
 
-```SQL
+```sql
 	TABLE_NAME                                                   CO
 	------------------------------------------------------------ --
 	CONSTRAINT_NAME
