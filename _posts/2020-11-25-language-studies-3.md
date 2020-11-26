@@ -9,8 +9,9 @@ languages: SQL
 테이블 생성 및 조작 연습
 
 
+
+stulist 테이블 생성 
 ```SQL
--- stulist 테이블 생성 ----------------------------------
 drop table stulist;
 
 create table stulist(
@@ -20,7 +21,10 @@ create table stulist(
     plagiarism number(3),
     grade varchar2(20)
 );
+```
 
+stulist 데이터 삽입
+```SQL
 insert all
 	into stulist(id, name, score, plagiarism) values(1, '김재웅', 75, 90)
 	into stulist(id, name, score, plagiarism) values(2, '이정민', 68, 10)
@@ -32,11 +36,12 @@ insert all
 select * from dual;
 
 select * from stulist;
------------------------------------
+```
 
 
 
--- cash 테이블 생성 ----------------------------------
+-- cash 테이블 생성 
+```SQL
 drop table cash;
 
 create table cash(
@@ -44,7 +49,10 @@ create table cash(
 	money varchar2(20),
     plus number(3) 
 );
+```
 
+-- cash 테이블에 데이터 삽입
+```SQL
 insert all
 	into cash(id, money, plus) values(1, 'TRUE', 20)
     into cash(id, money, plus) values(2, 'TRUE', 20)
@@ -55,11 +63,12 @@ insert all
 select * from dual;
 
 select * from cash;
---------------------------------------------------------------------
+```
 
 
 
--- grades 테이블 생성 ----------------------------------
+-- grades 테이블 생성 및 데이터 삽입
+```SQL
 drop table grades;
 
 create table grades(
@@ -74,11 +83,12 @@ insert into grades(grade, minscore , maxscore) values('C', 50, 69);
 insert into grades(grade, minscore , maxscore) values('D', 0, 49);
 
 select * from grades order by grade asc;
---------------------------------------------------------------------
+```
 
 
 
---plagiarisms 테이블 생성 ----------------------------------
+--plagiarisms 테이블 생성 및 데이터 삽입
+```SQL
 drop table plagiarisms;
 
 CREATE table plagiarisms(
@@ -94,22 +104,24 @@ INSERT INTO plagiarisms(penalty, minp, maxp) values(0 , 0, 69);
 SELECT *
 FROM plagiarisms
 ORDER BY maxp ASC;
---------------------------------------------------------------------
+```
 
 
 
 --Q1.alt stulist랑 cash 테이블만 사용해 점수를 계산해서 점수를 출력해보시오.
 
 --A1.
+```SQL
 select s.SCORE + nvl(c.PLUS,0)
 from stulist s, cash c
 where s.ID=c.ID(+);
-
+```
 
 
 --Q2. stulist, cash, plagiarisms 테이블을 사용해서 총점을 계산하고 등급을 도출해서 (id, 이름, 최종점수, grade) 를 출력해보시오.
 
 --A2.
+```SQL
 select id, name, score2, grade
 from 
 (select s.SCORE + nvl(c.PLUS,0) + penalty as score2, name, s.id
