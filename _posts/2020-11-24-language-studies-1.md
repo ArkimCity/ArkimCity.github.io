@@ -1,5 +1,5 @@
 ---
-title: "Language Study - SQL - 1. Outer Join에 관하여"
+title: "Language Study - SQL - 내가 보려고 만든 Outer Join에 관하여"
 date: 2020-11-24
 categories: LanguageStudies
 tags: SQL

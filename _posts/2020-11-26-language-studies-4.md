@@ -15,6 +15,7 @@ c : 이름 미 부여시. 보통 not null 의미
 
 + unique - 이름 그대로 중복 불가
 + check - where와 비슷하게 사용하고 싶을 경우 사용
+
 ```sql
 drop table emp03;
 
@@ -23,11 +24,11 @@ create table emp03(
     num number(3) constraint emp03_empno_u unique
 );
 ```
+
 + default - insert 시에 데이터 없어도 알아서 들어가있는거 (자바에서 기본 생성자 생성시 변수 지정하는거 같은거임)
 
 이름은 지정해줄 수 있다.
 
-```sql
 	TABLE_NAME                      CO
 	----------------------------- -----
 	CONSTRAINT_NAME
@@ -49,7 +50,7 @@ create table emp03(
 
 	EMP02                           R
 	EMP02_DEPTNO_FK
-```
+
 
 제약 조건 선언 방법
 
