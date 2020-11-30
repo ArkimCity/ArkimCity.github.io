@@ -7,9 +7,9 @@ languages: python
 ---
 Codility lessons 7 - Stacks and Queues - Brackets
 
-Question-url : https://app.codility.com/programmers/lessons/7-stacks_and_queues/
+Question-url : https://app.codility.com/programmers/lessons/7-stacks_and_queues/brackets/
 
-
+Working on it...
 
 ```python
 def solution(A):

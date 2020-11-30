@@ -11,12 +11,10 @@ main:
   # - title: "Sitemap"
   #   url: /sitemap/
   - title: "Language Studies"
-    url: /categories/#languagestudies/
+    url: /categories/languagestudies/
   - title: "Coding Test"
-    url: /categories/#codingtest/
+    url: /categories/codingtest/
   - title: "Tags"
     url: /tags/
-  # - title: "Languages"
-  #   url: /languages/
   - title: "Search"
     url: /search/
