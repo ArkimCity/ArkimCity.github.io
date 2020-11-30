@@ -1,6 +1,6 @@
 ---
 title: "Language Study - TypeScript - 1. 입문"
-date: 2020-11-26
+date: 2020-11-30
 categories: LanguageStudies
 tags: TypeScript
 languages: TypeScript
