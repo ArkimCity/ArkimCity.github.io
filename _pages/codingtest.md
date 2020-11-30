@@ -1,7 +1,7 @@
 ---
 title: "Coding Test 관련"
 layout: category
-permalink: /categories/CodingTest
+permalink: /categories/codingtest
 author_profile: true
-taxonomy : CodingTest
+taxonomy : codingtest
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Language Studies"
 layout: category
-permalink: /categories/LanguageStudies
+permalink: /categories/languagestudies/
 author_profile: true
-taxonomy : LanguageStudies
+taxonomy: languagestudies
 ---

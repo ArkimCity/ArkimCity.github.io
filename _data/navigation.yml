@@ -16,7 +16,5 @@ main:
     url: /categories/codingtest/
   - title: "Tags"
     url: /tags/
-  # - title: "Languages"
-  #   url: /languages/
   - title: "Search"
     url: /search/
