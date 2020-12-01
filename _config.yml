@@ -118,11 +118,6 @@ author:
       icon: "fab fa-fw fa-instagram"
       # url: "https://instagram.com/"
 
-# Sidebar
-sidebar:
-  title: "Sample Title"
-  nav: sidebar-main
-
 # Site Footer
 footer:
   links:
