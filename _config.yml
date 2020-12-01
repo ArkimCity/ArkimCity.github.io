@@ -113,7 +113,7 @@ author:
       # url: "https://facebook.com/"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      url: "https://github.com/ArkimCity"
+      # url: "https://github.com/ArkimCity"
     - label: "Instagram"
       icon: "fab fa-fw fa-instagram"
       # url: "https://instagram.com/"
@@ -129,10 +129,10 @@ footer:
       # url:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      # url:
+      url: "https://github.com/ArkimCity"
     - label: "GitLab"
       icon: "fab fa-fw fa-gitlab"
-      # url:
+      # url: 
     - label: "Bitbucket"
       icon: "fab fa-fw fa-bitbucket"
       # url:
@@ -282,10 +282,25 @@ defaults:
       comments: true
       share: true
       related: true
-  # _docs
-  - scope:
-      path: ""
-      type: docs
-    values:
       sidebar:
         nav: "docs"
+  # _docs
+  # - scope:
+  #     path: ""
+  #     type: docs
+  #   values:
+  #     layout: single
+  #     read_time: false
+  #     author_profile: false
+  #     share: false
+  #     comments: false
+  #     sidebar:
+  #       nav: "docs"
+#   # _docs
+#   - scope:
+#       path: ""
+#       type: docs
+#     values:
+#       sidebar:
+#         nav: "docs"
+#   # _docs
