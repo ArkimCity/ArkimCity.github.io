@@ -10,10 +10,13 @@ main:
   #   url: /collection-archive/
   # - title: "Sitemap"
   #   url: /sitemap/
-  - title: "Language Studies"
-    url: /categories/languagestudies/
-  - title: "Coding Test"
-    url: /categories/codingtest/
+  - title: Categories
+    children:
+    - title: "Language Studies"
+      url: /categories/languagestudies/
+    - title: "Coding Test"
+      url: /categories/codingtest/
+
   - title: "Tags"
     url: /tags/
   - title: "Search"
@@ -22,46 +25,18 @@ main:
     url: https://www.google.com/
 
 docs:
-  - title: Getting Started
+  - title: Website
     children:
-      - title: "Quick-Start Guide"
-        url: /docs/quick-start-guide/
-      - title: "Structure"
-        url: /docs/structure/
-      - title: "Installation"
-        url: /docs/installation/
-      - title: "Upgrading"
-        url: /docs/upgrading/
+      - title: "Jaeung.Kim"
+        url: http://jaeung.kim/
 
-  - title: Customization
+  - title: Language
     children:
-      - title: "Configuration"
-        url: /docs/configuration/
-      - title: "Navigation"
-        url: /docs/navigation/
-      - title: "UI Text"
-        url: /docs/ui-text/
-      - title: "Authors"
-        url: /docs/authors/
-      - title: "Layouts"
-        url: /docs/layouts/
-
-  - title: Content
-    children:
-      - title: "Working with Posts"
-        url: /docs/posts/
-      - title: "Working with Pages"
-        url: /docs/pages/
-      - title: "Working with Collections"
-        url: /docs/collections/
-      - title: "Helpers"
-        url: /docs/helpers/
-      - title: "Utility Classes"
-        url: /docs/utility-classes/
-
-  - title: Extras
-    children:
-      - title: "Stylesheets"
-        url: /docs/stylesheets/
-      - title: "JavaScript"
-        url: /docs/javascript/
+      - title: "Python"
+        url: /tags/#python
+      - title: "Java"
+        url: /tags/#java
+      - title: "SQL_oracle"
+        url: /tags/#sql
+      - title: "TypeScript"
+        url: /tags/#typescript
