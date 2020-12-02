@@ -293,3 +293,9 @@ defaults:
       author_profile: true
       sidebar:
         nav: "docs"
+ - scope:
+      path: "_layouts"
+      type: layouts
+    values:
+      sidebar:
+        nav: "docs"
