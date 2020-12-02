@@ -1,5 +1,5 @@
 ---
-title: "Programmers Practice 5"
+title: "Programmers Practice 6"
 date: 2020-12-03
 categories: CodingTest
 tags: programmers python
