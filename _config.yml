@@ -282,6 +282,8 @@ defaults:
       comments: true
       share: true
       related: true
+      toc: true
+      toc_sticky: true
       sidebar:
         nav: "docs"
   # _pages 부분입니다.
@@ -291,5 +293,7 @@ defaults:
     values:
       layout: single
       author_profile: true
+      toc: true
+      toc_sticky: true
       sidebar:
         nav: "docs"
