@@ -5,11 +5,13 @@ categories: CodingTest
 tags: programmers java
 languages: java
 ---
+
+## 1. 문제
 Programmers 7 - 피보나치 수
 
 [Question-url](https://programmers.co.kr/learn/courses/30/lessons/12945)
 
-
+## 2. 풀이
 ```java
 class Solution {
     public int solution(int n) {
