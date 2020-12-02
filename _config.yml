@@ -104,7 +104,7 @@ author:
       url: "mailto:jaeung949@gmail.com"
     - label: "Website"
       icon: "fas fa-fw fa-link"
-      url: "http://jaeung.kim/"
+      # url: "http://jaeung.kim/"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
       # url: "https://twitter.com/"
@@ -125,7 +125,7 @@ footer:
       icon: "fab fa-fw fa-twitter-square"
       # url:
     - label: "Facebook"
-      icon: "fab fa-fw fa-facebook-square"
+      icon: "https://www.facebook.com/jaeung94"
       # url:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
