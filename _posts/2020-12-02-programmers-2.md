@@ -1,18 +1,15 @@
 ---
-title: "Codility Practice 9"
-date: 2020-11-30
+title: "Programmers Practice 2"
+date: 2020-12-02
 categories: CodingTest
-tags: codility python
-languages: python
+tags: programmers java
+languages: java
 ---
 Codility lessons 7 - Stacks and Queues - Brackets
 [Question-url](https://app.codility.com/programmers/lessons/7-stacks_and_queues/brackets/)
 
-Working on it...
 
-```python
-def solution(A):
-    detector1 = 0
-    detector2 = 0
+```java
+
 ```
 
