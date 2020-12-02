@@ -284,6 +284,7 @@ defaults:
       related: true
       toc: true
       toc_sticky: true
+      toc_label: "Contents"
       sidebar:
         nav: "docs"
   # _pages 부분입니다.
