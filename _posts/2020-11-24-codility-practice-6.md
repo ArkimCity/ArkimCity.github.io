@@ -5,10 +5,14 @@ categories: CodingTest
 tags: codility python
 languages: python
 ---
+
+## 1. 문제
 Codility lessons 4 - counting_elements - PermCheck
 
 Question-url : https://app.codility.com/programmers/lessons/4-counting_elements/perm_check/
 
+
+## 2. 풀이
 1차 시도
 
 ```python
