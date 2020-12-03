@@ -23,6 +23,7 @@ def solution(brown, yellow):
 완전히 수학문제다
 
 brown = 2x +2y - 4
+
 yellow = (a-2)(b-2)
 
 brown과 yellow는 상수기때문에 서로 다른 두개의 식과 두개의 변수로 필연적으로 답을 찾을 수 있다.
