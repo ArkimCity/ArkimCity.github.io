@@ -23,7 +23,11 @@ def findmaxkey(dictionary):
             answerkey = i
             break
     return answerkey
+```
 
+추가적으로 가장 큰 값을 가진 딕셔너리 키를 받아오는 함수를 만들어두었다.
+
+```python
 def solution(genres, plays):
     answer = []
 
