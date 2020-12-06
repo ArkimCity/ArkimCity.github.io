@@ -8,9 +8,9 @@ toc_label: "Contents"
 ---
 
 ## 1. 문제
-Programmers - 점프와 순간 이동
+Programmers - 폰켓몬
 
-[Question-url](https://programmers.co.kr/learn/courses/30/lessons/12980)
+[Question-url](https://programmers.co.kr/learn/courses/30/lessons/1845)
 
 ## 2. 풀이
 n/2가 포켓몬 종류수보다 많다면 포켓몬 종류수를 출력하고,
