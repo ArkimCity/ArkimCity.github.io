@@ -85,22 +85,6 @@ public class GeoCodeTest {
 		}
 		return geocode;
 	}
-	
-	public static JSONObject jsonParser(String content) {
-		
-		JSONParser parser = new JSONParser();
-		JSONObject jsonObject = null;
-		try {
-
-			Object obj = parser.parse(content);
-
-			jsonObject = (JSONObject) obj;
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return jsonObject;
-	}
 
 	public static HashMap toGeoCode(String content) {
 		HashMap geocode = new HashMap();
@@ -132,6 +116,23 @@ public class GeoCodeTest {
 			e.printStackTrace();
 		}
 		return geocode;
+	}
+
+   	
+	public static JSONObject jsonParser(String content) {
+		
+		JSONParser parser = new JSONParser();
+		JSONObject jsonObject = null;
+		try {
+
+			Object obj = parser.parse(content);
+
+			jsonObject = (JSONObject) obj;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return jsonObject;
 	}
 }
 
