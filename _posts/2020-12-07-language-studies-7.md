@@ -78,6 +78,10 @@ public class GeoCodeTest {
 			}
 			geocode = toGeoCode(sbuf.toString());
 
+			is.close();
+			isr.close();
+			br.close();
+
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
