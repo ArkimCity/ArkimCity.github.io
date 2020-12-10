@@ -32,6 +32,7 @@ const stringandnumber: [string, number] = ['string', 123]
 ```
 이 일어난다. (2.7 버전에서부터 이와 같이 적용되었다고 한다.)
 
+## 2. 객체 생성
 
 객체 생성에 대한 기본 표현은 다음과 같다.
 ```typescript
@@ -68,4 +69,22 @@ const user: {
 
 // user.name = 'Jaeung Kim';
 //변경불가 에러
+```
+
+## 3. 별칭
+
+타입은 별칭을 통한 사용도 가능하다. 이때 별도의 타입이 생긴 것이 아니고, 이름만 빌려서 사용한 것이다. 
+
+```typescript
+type StringTypeNickName = string;
+type NumberTypeNickName = number;
+```
+
+심지어 여러개 타입을 합쳐 하나의 타입으로 사용이 가능할 때도 사용할 수 있다.
+
+```typescript
+type User = {
+  name: string;
+  age: number;
+};
 ```
