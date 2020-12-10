@@ -1,5 +1,5 @@
 ---
-title: "Language Study - TypeScript - 2. 입문 - 2"
+title: "Language Study - TypeScript - 2. 기본 문법 - 2"
 date: 2020-12-09
 categories: LanguageStudies
 tags: TypeScript
@@ -31,3 +31,41 @@ const stringandnumber: [string, number] = ['string', 123]
 // 오류 발생
 ```
 이 일어난다. (2.7 버전에서부터 이와 같이 적용되었다고 한다.)
+
+
+객체 생성에 대한 기본 표현은 다음과 같다.
+```typescript
+const user: {
+     name: string; 
+     age: number; 
+} = { 
+    name: '김재웅', 
+    age: 27 
+};
+```
+
+?를 통해 값이 없어도 가능한 속성으로 만든다. (선택 속성)
+
+```typescript
+const userWithUnknownHeight: {
+    name: string; 
+    age?: number; 
+} = { 
+  name: '김재웅' 
+};
+```
+
+readonly를 통해 읽기 전용으로 만든다.
+
+```typescript
+const user: { 
+    readonly name: string; 
+    height: numer; 
+} = { 
+    name: '김재웅', 
+    age: 27 
+};
+
+// user.name = 'Jaeung Kim';
+//변경불가 에러
+```

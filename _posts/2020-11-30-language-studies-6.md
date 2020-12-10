@@ -1,5 +1,5 @@
 ---
-title: "Language Study - TypeScript - 1. 입문"
+title: "Language Study - TypeScript - 1. 기본 문법 - 1"
 date: 2020-11-30
 categories: LanguageStudies
 tags: TypeScript
