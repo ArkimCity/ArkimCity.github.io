@@ -25,7 +25,7 @@ where uneed.id=appuser.id and need=sell.mname
 
 
 
-
+```sql
 select buyerid, buyerlocation, need, sellerid, sellerlocation, buyeraddress from
 (select appuser.id buyerid, appuser.ulocation buyerlocation, uaddress buyeraddress, need 
 from appuser, uneed
@@ -35,6 +35,9 @@ where uneed.id=appuser.id) buyer,
 locrelation
 where locrelation.ulocation=sell.ulocation) seller
 where seller.adjunctlocation=buyerlocation and buyer.need=seller.mname;
+```
+
+
 
 https://maps.googleapis.com/maps/api/geocode/json?address=%EC%84%9C%EC%9A%B8%EC%8B%9C%EA%B0%95%EB%82%A8%EA%B5%AC%ED%85%8C%ED%97%A4%EB%9E%80%EB%A1%9C4&key=AIzaSyB2Kw4tAxJcTljgHshXI59tCd80WZ2iz-c
 ```json
