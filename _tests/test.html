@@ -1,9 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>다각형에 이벤트 등록하기2</title>
+    <style>
+.area {
+    position: absolute;
+    background: #fff;
+    border: 1px solid #888;
+    border-radius: 3px;
+    font-size: 12px;
+    top: -5px;
+    left: 15px;
+    padding:2px;
+}
+
+.info {
+    font-size: 12px;
+    padding: 5px;
+}
+.info .title {
+    font-weight: bold;
+}
+</style>
+</head>
+<body>
 <div id="map" style="width:100%;height:350px;"></div>
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=발급받은 APP KEY를 사용하세요"></script>
 <script>
 // 지도에 폴리곤으로 표시할 영역데이터 배열입니다 
 var areas = [
     {
-       name : '강동구',
+        name : '강동구',
        path : [
            new kakao.maps.LatLng(37.557533180704915, 127.11519584981606),
            new kakao.maps.LatLng(37.57672487388627, 127.16683184366129),
@@ -12,7 +41,7 @@ var areas = [
            new kakao.maps.LatLng(37.51415680680291, 127.14672806823502),
            new kakao.maps.LatLng(37.52528270089, 127.12123165719615),
            new kakao.maps.LatLng(37.540669955324965, 127.1116764203608),
-           new kakao.maps.LatLng(37.557533180704915, 127.11519584981606)
+           new kakao.maps.LatLng(37.557533180704915, 127.11519584981606),
        ]
    }, {
        name : '송파구',
@@ -27,7 +56,7 @@ var areas = [
            new kakao.maps.LatLng(37.46240445587048, 127.12440571080893),
            new kakao.maps.LatLng(37.485708381512445, 127.11117085201238),
            new kakao.maps.LatLng(37.50224013587669, 127.0719146000724),
-           new kakao.maps.LatLng(37.522279423505026, 127.0690698130372)
+           new kakao.maps.LatLng(37.522279423505026, 127.0690698130372),
        ]
    }, {
        name : '강남구',
@@ -43,7 +72,7 @@ var areas = [
            new kakao.maps.LatLng(37.48175802427603, 127.03621915098798),
            new kakao.maps.LatLng(37.52503988289669, 127.01397119667513),
            new kakao.maps.LatLng(37.53231899582663, 127.02302831890559),
-           new kakao.maps.LatLng(37.52629974922568, 127.05867359288398)
+           new kakao.maps.LatLng(37.52629974922568, 127.05867359288398),
        ]
    }, {
        name : '서초구',
@@ -60,7 +89,7 @@ var areas = [
            new kakao.maps.LatLng(37.455326143310025, 126.99072073195462),
            new kakao.maps.LatLng(37.473856492692086, 126.98367668291802),
            new kakao.maps.LatLng(37.509314966770326, 126.98223807916081),
-           new kakao.maps.LatLng(37.52503988289669, 127.01397119667513)
+           new kakao.maps.LatLng(37.52503988289669, 127.01397119667513),
        ]
    }, {
        name : '관악구',
@@ -75,7 +104,7 @@ var areas = [
            new kakao.maps.LatLng(37.48218087575429, 126.90531975801812),
            new kakao.maps.LatLng(37.49125437495649, 126.94922661389508),
            new kakao.maps.LatLng(37.472561363278125, 126.9725891850662),
-           new kakao.maps.LatLng(37.473856492692086, 126.98367668291802)
+           new kakao.maps.LatLng(37.473856492692086, 126.98367668291802),
        ]
    }, {
        name : '동작구',
@@ -88,7 +117,7 @@ var areas = [
            new kakao.maps.LatLng(37.494889877415176, 126.92177893174825),
            new kakao.maps.LatLng(37.51329595732015, 126.92810628828279),
            new kakao.maps.LatLng(37.51722500741813, 126.95249990298159),
-           new kakao.maps.LatLng(37.509314966770326, 126.98223807916081)
+           new kakao.maps.LatLng(37.509314966770326, 126.98223807916081),
        ]
    }, {
        name : '영등포구',
@@ -102,7 +131,7 @@ var areas = [
            new kakao.maps.LatLng(37.504675281309176, 126.89594776782485),
            new kakao.maps.LatLng(37.513970034765684, 126.88156402353862),
            new kakao.maps.LatLng(37.54079733630232, 126.88825757860099),
-           new kakao.maps.LatLng(37.547373974997114, 126.89184663862764)
+           new kakao.maps.LatLng(37.547373974997114, 126.89184663862764),
        ]
    }, {
        name : '금천구',
@@ -112,7 +141,7 @@ var areas = [
            new kakao.maps.LatLng(37.447382928333994, 126.93084408056525),
            new kakao.maps.LatLng(37.434549366349124, 126.9025831711697),
            new kakao.maps.LatLng(37.482576591607305, 126.87683271502428),
-           new kakao.maps.LatLng(37.47753842789901, 126.90156094129895)
+           new kakao.maps.LatLng(37.47753842789901, 126.90156094129895),
        ]
    }, {
        name : '구로구',
@@ -127,7 +156,7 @@ var areas = [
            new kakao.maps.LatLng(37.474098236975095, 126.83549485076196),
            new kakao.maps.LatLng(37.4878476492147, 126.82264796791348),
            new kakao.maps.LatLng(37.50302612640443, 126.82504736331406),
-           new kakao.maps.LatLng(37.50548972232896, 126.82688081517314)
+           new kakao.maps.LatLng(37.50548972232896, 126.82688081517314),
        ]
    }, {
        name : '강서구',
@@ -144,7 +173,7 @@ var areas = [
            new kakao.maps.LatLng(37.53788078753248, 126.8242331426722),
            new kakao.maps.LatLng(37.5459123450554, 126.77324417717703),
            new kakao.maps.LatLng(37.55139183008809, 126.76979180579352),
-           new kakao.maps.LatLng(37.57881087633202, 126.79575768552907)
+           new kakao.maps.LatLng(37.57881087633202, 126.79575768552907),
        ]
    }, {
        name : '양천구',
@@ -156,7 +185,7 @@ var areas = [
            new kakao.maps.LatLng(37.54079733630232, 126.88825757860099),
            new kakao.maps.LatLng(37.513970034765684, 126.88156402353862),
            new kakao.maps.LatLng(37.50548972232896, 126.82688081517314),
-           new kakao.maps.LatLng(37.53788078753248, 126.8242331426722)
+           new kakao.maps.LatLng(37.53788078753248, 126.8242331426722),
        ]
    }, {
        name : '마포구',
@@ -169,7 +198,7 @@ var areas = [
            new kakao.maps.LatLng(37.547373974997114, 126.89184663862764),
            new kakao.maps.LatLng(37.571847855292745, 126.85984199399667),
            new kakao.maps.LatLng(37.588143322880526, 126.88433284773288),
-           new kakao.maps.LatLng(37.57409700522574, 126.90522065831053)
+           new kakao.maps.LatLng(37.57409700522574, 126.90522065831053),
        ]
    }, {
        name : '서대문구',
@@ -180,7 +209,7 @@ var areas = [
            new kakao.maps.LatLng(37.55605635475154, 126.96358226710812),
            new kakao.maps.LatLng(37.552310003728124, 126.93898161798973),
            new kakao.maps.LatLng(37.57409700522574, 126.90522065831053),
-           new kakao.maps.LatLng(37.60508692737045, 126.9524752030572)
+           new kakao.maps.LatLng(37.60508692737045, 126.9524752030572),
        ]
    }, {
        name : '은평구',
@@ -194,7 +223,7 @@ var areas = [
            new kakao.maps.LatLng(37.609977911401344, 126.90303066177668),
            new kakao.maps.LatLng(37.64150050996935, 126.91455481429648),
            new kakao.maps.LatLng(37.652480737339445, 126.956473797387),
-           new kakao.maps.LatLng(37.62949634786888, 126.9738864128702)
+           new kakao.maps.LatLng(37.62949634786888, 126.9738864128702),
        ]
    }, {
        name : '노원구',
@@ -209,7 +238,7 @@ var areas = [
            new kakao.maps.LatLng(37.62848931298715, 127.04358800895609),
            new kakao.maps.LatLng(37.64318263878276, 127.05800075220091),
            new kakao.maps.LatLng(37.68423857084347, 127.05288479710485),
-           new kakao.maps.LatLng(37.69359534202034, 127.0838752703195)
+           new kakao.maps.LatLng(37.69359534202034, 127.0838752703195),
        ]
    }, {
        name : '도봉구',
@@ -221,7 +250,7 @@ var areas = [
            new kakao.maps.LatLng(37.667173575971205, 127.02062116141389),
            new kakao.maps.LatLng(37.681894589603594, 127.01039666042071),
            new kakao.maps.LatLng(37.69824412775662, 127.01795099203432),
-           new kakao.maps.LatLng(37.68423857084347, 127.05288479710485)
+           new kakao.maps.LatLng(37.68423857084347, 127.05288479710485),
        ]
    }, {
        name : '강북구',
@@ -236,7 +265,7 @@ var areas = [
            new kakao.maps.LatLng(37.613652243470256, 127.0128154749523),
            new kakao.maps.LatLng(37.63377641288196, 126.98672705513869),
            new kakao.maps.LatLng(37.65209769387776, 126.9817452676551),
-           new kakao.maps.LatLng(37.676681761199085, 126.99383903424)
+           new kakao.maps.LatLng(37.676681761199085, 126.99383903424),
        ]
    }, {
        name : '성북구',
@@ -252,7 +281,7 @@ var areas = [
            new kakao.maps.LatLng(37.57524616245249, 127.02527254528003),
            new kakao.maps.LatLng(37.588565457216156, 126.99348293358314),
            new kakao.maps.LatLng(37.6118927319756, 126.98879865992384),
-           new kakao.maps.LatLng(37.62859715400388, 126.977175406416)
+           new kakao.maps.LatLng(37.62859715400388, 126.977175406416),
        ]
    }, {
        name : '중랑구',
@@ -263,7 +292,7 @@ var areas = [
            new kakao.maps.LatLng(37.57076342290955, 127.10304174249214),
            new kakao.maps.LatLng(37.56906425519017, 127.08068541280403),
            new kakao.maps.LatLng(37.60401928986419, 127.07382707099227),
-           new kakao.maps.LatLng(37.61283660342313, 127.07351243825278)
+           new kakao.maps.LatLng(37.61283660342313, 127.07351243825278),
        ]
    }, {
        name : '동대문구',
@@ -275,7 +304,7 @@ var areas = [
            new kakao.maps.LatLng(37.55724769712085, 127.07421053024362),
            new kakao.maps.LatLng(37.567577612590846, 127.05005601081567),
            new kakao.maps.LatLng(37.568943552237734, 127.02547266349976),
-           new kakao.maps.LatLng(37.57524616245249, 127.02527254528003)
+           new kakao.maps.LatLng(37.57524616245249, 127.02527254528003),
        ]
    }, {
        name : '광진구',
@@ -288,7 +317,7 @@ var areas = [
            new kakao.maps.LatLng(37.522279423505026, 127.0690698130372),
            new kakao.maps.LatLng(37.52629974922568, 127.05867359288398),
            new kakao.maps.LatLng(37.55724769712085, 127.07421053024362),
-           new kakao.maps.LatLng(37.56906425519017, 127.08068541280403)
+           new kakao.maps.LatLng(37.56906425519017, 127.08068541280403),
        ]
    }, {
        name : '성동구',
@@ -299,7 +328,7 @@ var areas = [
            new kakao.maps.LatLng(37.52629974922568, 127.05867359288398),
            new kakao.maps.LatLng(37.53231899582663, 127.02302831890559),
            new kakao.maps.LatLng(37.54118048964762, 127.01070894177482),
-           new kakao.maps.LatLng(37.568943552237734, 127.02547266349976)
+           new kakao.maps.LatLng(37.568943552237734, 127.02547266349976),
        ]
    }, {
        name : '용산구',
@@ -312,7 +341,7 @@ var areas = [
            new kakao.maps.LatLng(37.526617542453366, 126.94566733083212),
            new kakao.maps.LatLng(37.548705692021635, 126.96448570553055),
            new kakao.maps.LatLng(37.55094818807139, 126.98752996903328),
-           new kakao.maps.LatLng(37.54118048964762, 127.01070894177482)
+           new kakao.maps.LatLng(37.54118048964762, 127.01070894177482),
        ]
    }, {
        name : '중구',
@@ -323,7 +352,7 @@ var areas = [
            new kakao.maps.LatLng(37.548705692021635, 126.96448570553055),
            new kakao.maps.LatLng(37.55605635475154, 126.96358226710812),
            new kakao.maps.LatLng(37.56313604690827, 126.96873633279075),
-           new kakao.maps.LatLng(37.568943552237734, 127.02547266349976)
+           new kakao.maps.LatLng(37.568943552237734, 127.02547266349976),
        ]
    }, {
        name : '종로구',
@@ -338,7 +367,7 @@ var areas = [
            new kakao.maps.LatLng(37.576080790881456, 126.95565425846463),
            new kakao.maps.LatLng(37.60508692737045, 126.9524752030572),
            new kakao.maps.LatLng(37.622033431339425, 126.95427017006129),
-           new kakao.maps.LatLng(37.62949634786888, 126.9738864128702)
+           new kakao.maps.LatLng(37.62949634786888, 126.9738864128702),
        ]
     }
 ];
@@ -409,3 +438,5 @@ function displayArea(area) {
     });
 }
 </script>
+</body>
+</html>
