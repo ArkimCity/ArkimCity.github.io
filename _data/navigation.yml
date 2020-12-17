@@ -1,15 +1,5 @@
 # main links
 main:
-  # - title: "Quick-Start Guide"
-  #   url: https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/
-  # - title: "About"
-  #   url: https://mmistakes.github.io/minimal-mistakes/about/
-  # - title: "Sample Posts"
-  #   url: /year-archive/
-  # - title: "Sample Collections"
-  #   url: /collection-archive/
-  # - title: "Sitemap"
-  #   url: /sitemap/
   - title: "Language Studies"
     url: /categories/languagestudies/
   - title: "Coding Test"
@@ -22,6 +12,11 @@ main:
     url: https://www.google.com/
 
 docs:
+  - title: GitHub
+    children:
+      - title: "ArkimCIty"
+        url: https://github.com/ArkimCity
+
   - title: Website
     children:
       - title: "Jaeung.Kim"
@@ -35,5 +30,3 @@ docs:
         url: /tags/#java
       - title: "SQL_oracle"
         url: /tags/#sql
-      - title: "TypeScript"
-        url: /tags/#typescript
