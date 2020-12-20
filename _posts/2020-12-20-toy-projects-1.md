@@ -94,4 +94,4 @@ function scaleReset(){
 
 은 다음과 같다.
 
-![MAP_IN_SAME_SCALE]](/assets/images/MAP_IN_SAME_SCALE.jpg)
+![MAP_IN_SAME_SCALE](/assets/images/MAP_IN_SAME_SCALE.jpg)
