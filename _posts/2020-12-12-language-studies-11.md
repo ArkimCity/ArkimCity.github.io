@@ -136,5 +136,3 @@ geojson.org의 설명에 따르면
 와 같이 타입을 GeometryCollection으로 선언해준 뒤, geometries 안에 도형들이 들어가는 것으로 이해하면 된다.
 
 https://geojson.org/geojson-spec.html 을 살펴보면 알겠지만, 사실 geojson의 내용 중 일부에 해당하므로, 추후 정리할 예정이지만 필요하다면 이 사이트를 참고하는 것이 좋아보인다.
-
-다음 글에서는 이 자료구조가 3d로 표현되는 과정을 보고자 한다.
