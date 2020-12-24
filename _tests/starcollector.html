@@ -1,0 +1,41 @@
+<html>
+<script>
+    function changeIframeUrl() {
+        const url = document.getElementById("restaurant").value;
+        document.getElementById("a").src = "https://m.map.naver.com/search2/search.nhn?query="+url+"&sm=hty&style=v5";
+        document.getElementById("b").src = url;
+    }
+
+    function printName()  {
+        const name = document.getElementById('name').value;
+        document.getElementById("result").innerText = name;
+    }
+</script>
+<head>
+    <title> New Document </title>
+    <meta name="Generator" content="EditPlus">
+    <meta name="Author" content="">
+    <meta name="Keywords" content="">
+    <meta name="Description" content="">
+</head>
+<body>  
+    <input id='name' onkeyup='printName()'/>
+    <div id='result'></div>
+
+
+
+    <form action="starcollector.html">
+        <input type="text" id="restaurant" value="식당명">
+        <input type="submit" value="검색" onclick = "changeIframeUrl()">
+    </form>
+    <hr>
+
+    <iframe src="https://m.map.naver.com/" name="a" id="a" width="30%" height="100%" 
+    scrolling="yes" frameborder="0" marginwidth="0" marginheight="0"></iframe>
+
+    <iframe src="https://m.map.kakao.com/" name="b" id="b" width="30%" height="100%" 
+    scrolling="yes" frameborder="0" marginwidth="0" marginheight="0"></iframe>
+
+</body>
+
+</html>
