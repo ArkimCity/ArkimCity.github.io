@@ -1,6 +1,6 @@
 ---
 title: "Programmers Practice 18"
-date: 2020-12-16
+date: 2020-12-23
 categories: CodingTest
 tags: programmers python
 languages: python

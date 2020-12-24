@@ -1,6 +1,6 @@
 ---
 title: "Programmers Practice 17"
-date: 2020-12-16
+date: 2020-12-21
 categories: CodingTest
 tags: programmers python
 languages: python
