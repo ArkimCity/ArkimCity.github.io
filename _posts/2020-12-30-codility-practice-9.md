@@ -1,6 +1,6 @@
 ---
-title: "Codility Practice 8"
-date: 2020-11-28
+title: "Codility Practice 9"
+date: 2020-12-30
 categories: CodingTest
 tags: codility python
 languages: python
