@@ -2,7 +2,7 @@
 title: "Language Study - TypeScript - 3. 함수"
 date: 2020-12-10
 categories: LanguageStudies
-tags: TypeScript
+tags: TypeScript javascript
 languages: TypeScript
 ---
 

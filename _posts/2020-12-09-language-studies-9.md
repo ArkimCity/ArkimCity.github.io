@@ -2,8 +2,8 @@
 title: "Language Study - TypeScript - 2. 기본 문법 - 2"
 date: 2020-12-09
 categories: LanguageStudies
-tags: TypeScript
-languages: TypeScript
+tags: TypeScript javascript
+languages: TypeScript 
 ---
 
 
