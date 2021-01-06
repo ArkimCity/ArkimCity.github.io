@@ -2,7 +2,7 @@
 title: "Language Study - TypeScript - 1. 기본 문법 - 1"
 date: 2020-11-30
 categories: LanguageStudies
-tags: TypeScript
+tags: TypeScript javascript
 languages: TypeScript
 ---
 ## 1. 의의
