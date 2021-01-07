@@ -12,7 +12,7 @@ tags: D3.js javascript
 
 ![계층 사진](https://github.com/ArkimCity/ArkimCity.github.io/blob/main/assets/images/d3_h_s.PNG?raw=true)
 
-## 2. index.html (기본 구조)
+## 2. index.html
 
 꼭 이렇게 해야하는 건 아니지만, 인터넷에서 예제를 찾을 때 저와 같은 고생을 하지 않도록 이렇게 보여드리겠습니다.
 
