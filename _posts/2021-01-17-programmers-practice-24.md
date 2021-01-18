@@ -7,7 +7,7 @@ languages: python
 ---
 ## 1. 문제 
 
-programmers - 숫자 게임
+programmers - 단어 변환
 
 [Question-url](https://programmers.co.kr/learn/courses/30/lessons/43163)
 
