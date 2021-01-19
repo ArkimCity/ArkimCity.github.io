@@ -20,7 +20,7 @@ title                    : "StudioJ"
 title_separator          : "-"
 subtitle                 : # site tagline that appears below site title in masthead
 name                     : "Jaeung Kim"
-description              : "Jaeung, Java, JavaScript, JupyterNotebook"
+description              : "Jaeung with Java, JavaScript, JupyterNotebook"
 url                      : "https://arkimcity.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : "ArkimCity/ArkimCity.github.io"
