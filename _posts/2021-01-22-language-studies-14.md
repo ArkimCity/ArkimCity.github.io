@@ -19,9 +19,9 @@ XYZ를 그냥 곧이곧대로 사용하는 것보다, XY 평면에 depth 개념�
 
 ## 2. Link
 
-레포
-![링크](https://github.com/ArkimCity/three.js_practice)
+레포 -
+[링크](https://github.com/ArkimCity/three.js_practice)
 
-실제 구동 사이트(데이터는 예시로 임시로 생성중)
-![랑크](https://arkimcity.github.io/three.js_practice/)
+실제 구동 사이트(데이터는 예시로 임의 생성중) - 
+[링크](https://arkimcity.github.io/three.js_practice/)
 
