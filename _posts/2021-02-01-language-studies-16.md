@@ -16,5 +16,7 @@ tags: Three.js javascript
 
 ## 2. Link
 
+레포 - [링크](https://github.com/playdata-encore/06.Web_Vue/tree/main/testApp)
+
 실행중 - [링크](https://playdata-encore.github.io/06.Web_Vue/testApp/index.html)
 
