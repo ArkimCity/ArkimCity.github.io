@@ -1,5 +1,5 @@
 ---
-title: "Language Study - HerokuApp - 간편하게 스프링부트 프로젝트를 웹에 배포해보자!"
+title: "Language Study - HerokuApp - 간편하게 스프링부트 프로젝트를 웹에 배포해보자"
 date: 2021-02-02
 categories: LanguageStudies
 tags: SpringBoot
@@ -18,7 +18,7 @@ tags: SpringBoot
 
 다만 데이터베이스 연동, 배포 및 개수 등에 제한사항 역시 분명히 존재하므로, 자세한 것은 사이트를 직접 방문해 확인해 보시는 것을 추천한다.
 
-[www.heroku.com](www.heroku.com)
+[https://www.heroku.com/]https://www.heroku.com/)
 
 ## 2. Link
 
