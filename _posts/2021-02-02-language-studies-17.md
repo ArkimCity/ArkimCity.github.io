@@ -22,7 +22,7 @@ tags: SpringBoot
 
 ## 2. Link
 
-레포 - [https://github.com/ArkimCity/WalkableCity](https://github.com/ArkimCity/WalkableCity)
+레포 - [https://github.com/ArkimCity/WalkableCity-backend](https://github.com/ArkimCity/WalkableCity-backend)
 
 실행중 - [https://walkable-city.herokuapp.com/gettest](https://walkable-city.herokuapp.com/gettest)
 
