@@ -26,3 +26,5 @@ tags: SpringBoot
 
 실행중 - [https://walkable-city.herokuapp.com/gettest](https://walkable-city.herokuapp.com/gettest)
 
+크롤링테스트 - [https://walkable-city.herokuapp.com/crawltest?address=김포&search=삼겹살](https://walkable-city.herokuapp.com/crawltest?address=김포&search=삼겹살)
+
