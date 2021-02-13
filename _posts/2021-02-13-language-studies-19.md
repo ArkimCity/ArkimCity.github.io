@@ -8,7 +8,7 @@ tags: D3.js
 
 ## 1. D3.js
 
-기본 틀은 D3 js를 사용했고, 지료는 [국회 예산 정책처 2021년도 예산안 분석](https://www.nabo.go.kr/Sub/01Report/01_02_Board.jsp?funcSUB=view&bid=19&arg_cid1=0&arg_cid2=0&arg_class_id=0&currentPage=0&pageSize=10&currentPageSUB=0&pageSizeSUB=10&key_typeSUB=&keySUB=&search_start_dateSUB=&search_end_dateSUB=&department=0&department_sub=0&etc_cate1=A&etc_cate2=&sortBy=reg_date&ascOrDesc=desc&search_key1=&etc_1=0&etc_2=1&tag_key=%EC%98%88%EC%82%B0%EB%B6%84%EC%84%9D&arg_id=7370&item_id=7370&etc_1=1&etc_2=1&name2=1)를 엑셀로 불러와 사용했다.
+기본 틀은 D3 js를 사용했고, 자료는 [국회 예산 정책처 2021년도 예산안 분석](https://www.nabo.go.kr/Sub/01Report/01_02_Board.jsp?funcSUB=view&bid=19&arg_cid1=0&arg_cid2=0&arg_class_id=0&currentPage=0&pageSize=10&currentPageSUB=0&pageSizeSUB=10&key_typeSUB=&keySUB=&search_start_dateSUB=&search_end_dateSUB=&department=0&department_sub=0&etc_cate1=A&etc_cate2=&sortBy=reg_date&ascOrDesc=desc&search_key1=&etc_1=0&etc_2=1&tag_key=%EC%98%88%EC%82%B0%EB%B6%84%EC%84%9D&arg_id=7370&item_id=7370&etc_1=1&etc_2=1&name2=1)을 엑셀로 불러와 사용했다.
 
 
 ## 2. 결과 사진
