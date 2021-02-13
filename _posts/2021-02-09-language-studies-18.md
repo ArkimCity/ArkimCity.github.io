@@ -2,7 +2,7 @@
 title: "Language Study - https://mapshaper.org/ - SHP파일을 GeoJson으로 사용하고싶다면"
 date: 2021-02-02
 categories: LanguageStudies
-tags: SpringBoot
+tags: GeoJson
 ---
 
 
