@@ -15,9 +15,7 @@ tags: D3.js
 
 결과 사진은 아래와 같다. 사실 전년도와 큰 차이는 없는데, 의외로 보건복지부와 교육부의 비율이 높아 좀 놀랐다.
 
-코드는 
-
-![](../assets/images/budget2021_d3.jpg)
+![](https://github.com/ArkimCity/ArkimCity.github.io/blob/main/assets/images/budget2021_d3.jpg?raw=true)
 
 ## 2021 한국 예산 json
 
