@@ -3,7 +3,7 @@ layout: post
 title:  "Parking Cell"
 # author: john
 categories: [ Parking, Automation ]
-tags: [red, yellow]
+tags: []  # red, yellow
 # image: assets/images/11.jpg
 description: "설계 자동화에서 주차칸을 배치하고자 할 떄의 필요한 데이터는 무엇일까."
 featured: false
