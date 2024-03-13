@@ -12,6 +12,51 @@ hidden: false
 beforetoc: "test"
 toc: false
 ---
+Parking is one of the most frequently encountered and considered important in design automation.
+At this time, let's think briefly about how we can look at the data of the parking.
+
+#### conditions of parking
+
+The basic image that comes to mind when you think of a parking lot is as follows.
+
+<img src="/assets/images/parking_cell.png" alt="Parking Cell" height="200"/>
+
+However, there are design contexts and regulations for the parking compartment to be drawn.
+
+Representative content is as follows.
+
+```html
+Based on right-angled parking,
+   1. A width of 2.5 m shall exist.
+   2. A vertical width of 5.0 m shall exist.
+   3. There shall be an empty space 2.5 meters wide and 6.0 meters wide, which is the same as the parking compartment, in the entry direction of the parking.
+      3-1. The empty space shall basically be located within the site.
+      3-2. In special cases, such as when a vacant space is in contact with a narrow road surface,
+         It's okay not to have all parts located within the site (parked by outside car)
+         3-2-1. There are 8 logarithmic limits if you want to park by being bitten by an external lane.
+   4. From the empty space of the entry part of the parking space, or the entry part itself
+      It shall be 2.5 meters wide and shall be connected to the road corresponding to the outside of the site.
+```
+
+In other words, from the perspective of Computational Design, placing a parking space is a big deal
+- As well as placing the square where the car compartment is drawn
+- This means that the parking compartment, the entry part of the parking compartment, and the entry part of the parking compartment shall be located from the outside road of the site.
+
+A simple illustration of this is as follows.
+
+<img src="/assets/images/parking_simple_diagram.png" alt="Parking Cell" height="400"/>
+
+Additionally,
+- You may need a reference centerline to arrange this parking,
+- Whether or not this parking space is parked due to being bitten by an outside lane,
+- To see if you're going beyond the logarithmic limits that can be gathered if you're parked after being bitten, what is the corresponding group index
+
+Parking can be arranged accurately only with information such as information, and it can be easily reflected even if post-processing is needed in the future.
+
+In addition, in the process of actual parking arrangements, the information necessary for parking and the information necessary to be contained in each parking space are
+It is reflected when you create a class that corresponds to the ParkingCell you want to create while working, making it easier to create criteria for placement.
+
+-------------------------------------------
 
 주차는 설계 자동화에 있어 가장 빈번하게 마주치고 중요하게 여겨지는 대표적인 항목 중에 하나입니다.
 이 때, 주차칸이라는 데이터를 어떻게 바라볼 수 있을지 간략하게 생각해보겠습니다.
@@ -29,7 +74,7 @@ toc: false
 ```html
 직각 주차를 기준으로,
 1. 2.5m 의 가로 폭이 존재해야 한다.
-2. 5.0m 의 세롶 폭이 존재해야 한다.
+2. 5.0m 의 세로 폭이 존재해야 한다.
 3. 주차의 진입방향에 주차칸과 동일한 가로 폭 2.5m에, 세로폭 6.0m 빈 공간이 존재해야 한다.
   3-1. 해당 빈 공간은 기본적으로 대지 내에 위치하여야 한다.
   3-2. 해당 빈 공간은 도로 폭이 좁은 면과 접해있을 경우와 같이 특수한 경우,
