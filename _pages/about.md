@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Spacewalk Architectural Engine
+title: Jaeung Kim
 permalink: /about
 comments: true
 ---
@@ -8,7 +8,7 @@ comments: true
 <div class="row justify-content-between">
 <div class="col-md-8 pr-5">
 
-<p>This is the page for introducing Spacewalk Engine Team and its works.</p>
+<p>Introducing Jaeung Kim</p>
 
 <p class="mb-5"><img class="shadow-lg" src="{{site.baseurl}}/assets/images/intro.gif" alt="engine documents intro image" /></p>
 
@@ -22,9 +22,10 @@ comments: true
 <div class="col-md-4">
 
 <div class="sticky-top sticky-top-80">
-<h5>Contanct Us</h5>
+<h5>Contanct</h5>
 
-<p> <a target="_blank" href="https://www.landbook.net/">https://www.landbook.net/</a> </p>
+<p>jaeung949@gmail.com</p>
+<!-- <p> <a target="_blank" href="https://www.landbook.net/">https://www.landbook.net/</a> </p> -->
 
 <!-- <p>Thank you for your support! Your donation helps me to maintain and improve <a target="_blank" href="https://github.com/wowthemesnet/mediumish-theme-jekyll">Mediumish <i class="fab fa-github"></i></a>.</p> -->
 
