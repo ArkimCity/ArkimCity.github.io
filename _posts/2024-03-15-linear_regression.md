@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "Linear Regression 이란?"
+title:  "프로그래머를 위한 선형대수 책 리뷰"
 # author: john
-categories: [ MachineLearning ]
+categories: [ Book ]
 tags: []  # red, yellow
 # image: assets/images/11.jpg
 description: ""
@@ -12,5 +12,3 @@ hidden: false
 beforetoc: "test"
 toc: false
 ---
-
-지도학습의 대표 분류 중 하나인 회귀 중에서도 기본이 되는 선형 회귀에 대한 내용을 알아보고자 합니다.
