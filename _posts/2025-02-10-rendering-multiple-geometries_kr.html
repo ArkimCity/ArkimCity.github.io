@@ -1,0 +1,392 @@
+---
+layout: post
+title:  "Rendering Multiple Geometries"
+thumbnail: /images/rendering-multiple-geometries/thumbnail.gif
+tag: "
+    #threejs
+    #3d
+    #rendering
+    #LBDeveloper
+"
+author: jaeung-swk
+---
+<!-- three js 설치 -->
+<head>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@v0.149.0/build/three.module.js",
+                "OrbitControls": "https://cdn.jsdelivr.net/npm/three@v0.149.0/examples/jsm/controls/OrbitControls.js",
+                "BufferGeometryUtils": "https://cdn.jsdelivr.net/npm/three@v0.149.0/examples/jsm/utils/BufferGeometryUtils.js"
+            }
+        }
+    </script>
+</head>
+
+<div style="width: 400px; max-width: 400px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: center;">
+    <img src="{{ '/images/rendering-multiple-geometries/thumbnail.gif' | relative_url }}" alt="thumbnail" style="max-width: 100%;">
+</div>
+
+<br>
+<h2> Introduction </h2>
+<br>
+<h4>이 글에서는 여러 개의 geometry 를 렌더링하고자 할 때 최적화 및 렌더링 부하를 줄이는 방법을 소개하고자 합니다.</h4>
+<br>
+<br>
+<h2>Abstract</h2>
+<br>
+<h4>1. three js 에서 도형에 해당하는 객체를 만드는 가장 기본적인 방법은 mesh 에 해당하는 geometry 와 material 을 통해 하나의 mesh 를 생성하는 것입니다.</h4>
+<h4>2. 이때 지나친 drawcall 의 개수 때문에 너무 느려서, geometry 들을 material 단위로 merge 해 mesh 개수를 줄이는 과정을 통해 1차 최적화 시도를 행했습니다.</h4>
+<h4>3. 추가적으로, 기준 geometry에서  move or rotate 및 scale 등의 변환을 통해 생성 가능한 geometry 는 group 이 아닌 instancedMesh 를 통해 메모리 사용량 개선과 geometry 생성시의 부하 감소를 시도했습니다.</h4>
+<br>
+<br>
+<hr>
+<h2>1. Basic Mesh Creation</h2>
+<br>
+<h4>먼저 아파트 하나를 렌더링한다고 가정해보겠습니다. 아파트를 형성하는 도형에는 많은 종류가 있지만, 여기서는 덩어리 블록을 예시로 들어보겠습니다.</h4>
+<h4>아래처럼 하나의 블록을 렌더링하는 경우, 큰 고민이 필요하지 않습니다.</h4>
+
+<pre><code class="language-javascript">
+    ...
+    const [geometry, material] = [new THREE.BoxGeometry(20, 10, 3), new THREE.MeshBasicMaterial({ color: 0x808080, transparent: true, opacity: 0.2 })];
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+    ...
+</code></pre>
+
+<br>
+<div id="draw_calls_display_0" style="text-align: center; font-size: 10px; font-weight: bold; color: #000000;">Draw Calls: 0</div>
+<div id="mesh_creation_time_display_0" style="text-align: center; font-size: 10px; font-weight: bold; color: #000000;">Mesh Creation Time: 0</div>
+<div id="threejs-scene-0-single-mesh" style="width: 800px; height: 300px; margin: 0 auto; display: flex; justify-content: center; align-items: center;">
+    <script type="module">
+        import * as THREE from 'three';
+    import { OrbitControls } from 'OrbitControls';
+        (function() {
+            const [width, height] = [800, 200];
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xeeeeee);
+            const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer();
+            renderer.setSize(width, height);
+            document.getElementById('threejs-scene-0-single-mesh').appendChild(renderer.domElement);
+
+            const mesh_creation_time_start = performance.now();
+            const [geometry, material] = [new THREE.BoxGeometry(20, 10, 3), new THREE.MeshBasicMaterial({ color: 0x808080, transparent: true, opacity: 0.2 })];
+            const cube = new THREE.Mesh(geometry, material);
+            scene.add(cube);
+            const mesh_creation_time_end = performance.now();
+
+            camera.position.z = 50;
+
+            camera.lookAt(new THREE.Vector3(0, 0, 0));
+            const controls = new OrbitControls(camera, renderer.domElement);
+
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+
+                document.getElementById('draw_calls_display_0').textContent = `Draw Calls: ${renderer.info.render.calls}`;
+            }
+            animate();
+            document.getElementById('mesh_creation_time_display_0').textContent = `Mesh Creation Time: ${(mesh_creation_time_end - mesh_creation_time_start).toFixed(3)} ms`;
+        })();
+    </script>
+</div>
+<h4>하지만 아파트 전체를 렌더링하고자 할 때, 창문과 벽 등 한 세대의 geometry 는 100개가 넘는 경우가 적지 않고, </h4>
+<h4>이는 즉 100세대를 렌더하고자 할 경우 geometry 의 개수는 다섯자리 수를 쉽게 넘을 수 있다는 의미입니다. </h4>
+<h4>이 때 각 geometry 하나 당 mesh 한개를 생성해 렌더링하는 경우입니다.</h4>
+<h4>아래는 10,000개의 도형을 렌더링한 결과입니다. 각 geometry는 베이스 도형을 clone 및 translate 하여 생성했습니다.</h4>
+<br>
+<pre><code class="language-javascript">
+    // 아래의 코드가 5,000번 실행됩니다. scene 에 add되는 mesh 의 개수는 10,000개입니다.
+    ...
+    const geometry_1 = base_geometry_1.clone().translate(i * x_interval, j * y_interval, k * z_interval);
+    const geometry_2 = base_geometry_2.clone().translate(i * x_interval, j * y_interval, k * z_interval + 3);
+
+    const cube_1 = new THREE.Mesh(geometry_1, material_1) ;
+    const cube_2 = new THREE.Mesh(geometry_2, material_2);
+
+    scene.add(cube_1);
+    scene.add(cube_2);
+    ...
+</code></pre>
+<br>
+<div id="draw_calls_display_1" style="text-align: center; font-size: 10px; font-weight: bold; color: #000000;">Draw Calls: 0</div>
+<div id="mesh_creation_time_display_1" style="text-align: center; font-size: 10px; font-weight: bold; color: #000000;">Mesh Creation Time: 0</div>
+<div id="threejs-scene-2-naive-meshes" style="width: 800px; height: 300px; margin: 0 auto; display: flex; justify-content: center; align-items: center;">
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'OrbitControls';
+
+        (function() {
+            const [width, height] = [800, 200];
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xeeeeee);
+            const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer();
+            renderer.setSize(width, height);
+            document.getElementById('threejs-scene-2-naive-meshes').appendChild(renderer.domElement);
+
+            const mesh_creation_time_start = performance.now();
+            const base_geometry_1 = new THREE.BoxGeometry(20, 10, 3);
+            const base_geometry_2 = new THREE.BoxGeometry(20, 10, 1);
+            const material_1 = new THREE.MeshBasicMaterial({ color: 0x808080, transparent: true, opacity: 0.2 });
+            const material_2 = new THREE.MeshBasicMaterial({ color: 0x111111, transparent: true, opacity: 0.2 });
+            const [x_range, y_range, z_range] = [10, 10, 50];
+            const [x_interval, y_interval, z_interval] = [60, 40, 4];
+            for (let i = 0; i < x_range; i++) {
+                for (let j = 0; j < y_range; j++) {
+                    for (let k = 0; k < z_range; k++) {
+                        const geometry_1 = base_geometry_1.clone().translate(i * x_interval, j * y_interval, k * z_interval);
+                        const geometry_2 = base_geometry_2.clone().translate(i * x_interval, j * y_interval, k * z_interval + 3);
+
+                        const cube_1 = new THREE.Mesh(geometry_1, material_1) ;
+                        const cube_2 = new THREE.Mesh(geometry_2, material_2);
+
+                        scene.add(cube_1);
+                        scene.add(cube_2);
+                    }
+                }
+            }
+            const mesh_creation_time_end = performance.now();
+
+            const controls = new OrbitControls(camera, renderer.domElement);
+
+            camera.position.set(x_range * x_interval / 2, y_range * y_interval * 1.3, z_range * z_interval / 2);
+            controls.target.set(x_range * x_interval / 2, 0, z_range * z_interval / 2);
+
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+
+                document.getElementById('draw_calls_display_1').textContent = `Draw Calls: ${renderer.info.render.calls}`;
+            }
+            animate();
+            document.getElementById('mesh_creation_time_display_1').textContent = `Mesh Creation Time: ${(mesh_creation_time_end - mesh_creation_time_start).toFixed(3)} ms`;
+        })();
+    </script>
+</div>
+<br>
+<br>
+<br>
+<hr>
+<h2>2. Merge Geometries</h2>
+<br>
+<h4>이제 렌더링 최적화를 위해 대표적으로 사용되는 방법 중 하나인 mesh 개수 감소 방법을 말씀드리겠습니다.</h4>
+<h4>그래픽스 쪽에는 drawcall 이라는 개념이 있다고 합니다.</h4>
+<h4>CPU는 장면에서 렌더링해야 할 도형을 찾아내고, 이를 GPU에 렌더링하도록 요청하는데, 이 요청 횟수를 draw call이라고 합니다.</h4>
+<h4>이 때의 기준은 기본적으로 렌더링해야하는 서로다른 material 을 가진 서로 다른 mesh 의 렌더링을 요청하는 횟수로 이해할 수 있습니다.</h4>
+<br>
+<h4>여기서 다중 작업에 특화되어 있지 않은 CPU가 지속적으로 동시에 많은 호출을 처리해야 하면서 병목 현상이 발생할 수 있습니다.</h4>
+<div style="width: 400px; max-width: 400px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: center;">
+    <img src="{{ '/images/rendering-multiple-geometries/bottle_neck.jpg' | relative_url }}" style="max-width: 100%;">
+    <div style="font-size: 10px; color: #808080;">이미지 출처: https://joong-sunny.github.io/graphics/graphics/#%EF%B8%8Fdrawcall</div>
+</div>
+<br>
+<br>
+<h4>마우스로 scene 을 조작해보시면서 이 케이스와 직전 케이스의 drawcall의 차이를 확인해보실 수 있습니다.</h4>
+<h4>위의 케이스에서는 설정되어있는 카메라의 max distance나 화면 밖으로 도형이 나가는 경우 등의 이유로 항상 10,000번이 call 되지는 않지만 </h4>
+<h4>대부분의 경우 상당한 양의 call 이 발생하는 것을 확인할 수 있습니다.</h4>
+<br>
+<h4>여기에서는 material 을 두개 사용했기 때문에, 서로 다른 material 을 가진 geometry 들을 merge 하는 방법을 사용했습니다.</h4>
+<h4>따라서 확인하실 수 있는 것 처럼 여기에서의 draw call 은 최대 2로 고정되는 것을 확인하실 수 있습니다.</h4>
+
+<pre><code class="language-javascript">
+    // 아래의 코드가 1번 실행됩니다. scene 에 add되는 mesh 의 개수는 2개입니다.
+    ...
+    const mesh_1 = new THREE.Mesh(BufferGeometryUtils.mergeBufferGeometries(all_geometries_1), material);
+    const mesh_2 = new THREE.Mesh(BufferGeometryUtils.mergeBufferGeometries(all_geometries_2), material_2);
+
+    scene.add(mesh_1);
+    scene.add(mesh_2);
+    ...
+</code></pre>
+
+<br>
+<div id="draw_calls_display_2" style="text-align: center; font-size: 10px; font-weight: bold; color: #000000;">Draw Calls: 0</div>
+<div id="mesh_creation_time_display_2" style="text-align: center; font-size: 10px; font-weight: bold; color: #000000;">Mesh Creation Time: 0</div>
+<div id="threejs-scene-3-group-geometries" style="width: 800px; height: 300px; margin: 0 auto; display: flex; justify-content: center; align-items: center;">
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'OrbitControls';
+        import * as BufferGeometryUtils from 'BufferGeometryUtils';
+
+        (function() {
+            const [width, height] = [800, 200];
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xeeeeee);
+            const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer();
+            renderer.setSize(width, height);
+            document.getElementById('threejs-scene-3-group-geometries').appendChild(renderer.domElement);
+
+            const mesh_creation_time_start = performance.now();
+            const base_geometry_1 = new THREE.BoxGeometry(20, 10, 3);
+            const base_geometry_2 = new THREE.BoxGeometry(20, 10, 1);
+            const all_geometries_1 = [];
+            const all_geometries_2 = [];
+            const [x_range, y_range, z_range] = [10, 10, 50];
+            const [x_interval, y_interval, z_interval] = [60, 40, 4];
+            for (let i = 0; i < x_range; i++) {
+                for (let j = 0; j < y_range; j++) {
+                    for (let k = 0; k < z_range; k++) {
+                        const geometry_1 = base_geometry_1.clone().translate(i * x_interval, j * y_interval, k * z_interval);
+                        const geometry_2 = base_geometry_2.clone().translate(i * x_interval, j * y_interval, k * z_interval + 3);
+
+                        all_geometries_1.push(geometry_1);
+                        all_geometries_2.push(geometry_2);
+                    }
+                }
+            }
+            const material_1 = new THREE.MeshBasicMaterial({ color: 0x808080, transparent: true, opacity: 0.2 });
+            const material_2 = new THREE.MeshBasicMaterial({ color: 0x111111, transparent: true, opacity: 0.2 });
+
+            const mesh_1 = new THREE.Mesh(BufferGeometryUtils.mergeBufferGeometries(all_geometries_1), material_1);
+            const mesh_2 = new THREE.Mesh(BufferGeometryUtils.mergeBufferGeometries(all_geometries_2), material_2);
+
+            scene.add(mesh_1);
+            scene.add(mesh_2);
+            const mesh_creation_time_end = performance.now();
+            const controls = new OrbitControls(camera, renderer.domElement);
+
+            camera.position.set(x_range * x_interval / 2, y_range * y_interval * 1.3, z_range * z_interval / 2);
+            controls.target.set(x_range * x_interval / 2, 0, z_range * z_interval / 2);
+
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+
+                document.getElementById('draw_calls_display_2').textContent = `Draw Calls: ${renderer.info.render.calls}`;
+            }
+            animate();
+            document.getElementById('mesh_creation_time_display_2').textContent = `Mesh Creation Time: ${(mesh_creation_time_end - mesh_creation_time_start).toFixed(3)} ms`;
+        })();
+    </script>
+</div>
+<h4>렌더링 부하가 개선되었음을 직접적으로 확인할 수 있습니다.</h4>
+<br>
+<br>
+<hr>
+<h2>3. InstancedMesh</h2>
+<br>
+<h4>위에서 geometry 들을 merge 하는 것으로 draw call 관점에서의 부하를 감소시킬 수 있는 방법을 확인했습니다.</h4>
+<h4>이 도형들은 clone 및 translate 만 사용된 도형들로 이루여져 있어 모태가되는 형태가 동일합니다.</h4>
+<h4>이는 건물이나 나무와 같은 객체를 렌더링 할 떄에도 유사한 경우가 발생합니다. </h4>
+<br>
+<h4>층별로 형태가 다를 필요가 없다거나, 파츠들을 복사해 층의 벽들로 이루는 등의 경우, 나무 종류를 많이 사용하지 않고 하나의 나무를 크기나 방향만 바꿔 사용하는 경우 등 입니다. </h4>
+<h4>같은 형태의 평면이 여러개의 동으로 생성된 경우 또한 물론 적용 가능합니다.</h4>
+<br>
+<h4>이 경우에는 geometry 객체 생성 횟수도 줄일 수 있고 메모리 및 시간에 효율적인 instancedMesh 를 사용하여 추가적으로 최적화를 시도할 수 있습니다.</h4>
+<br>
+<h4>그래픽스에 Instancing 이라는 개념이 있습니다.</h4>
+<h4>Instancing은 유사한 geometry를 여러 번 렌더링할 때, 데이터를 한 번만 GPU로 보내고</h4>
+<h4>각 인스턴스의 변환 정보를 GPU에 추가적으로 전달하는 것으로 geometry 생성 또한 한번만 하면 되는 장점이 있습니다.</h4>
+<h4>Unity와 같은 게임 엔진에서도 이 개념을 활용하여 GPU instancing 이라는 기능을 통해 성능 최적화를 이루고 있습니다.</h4>
+<br>
+<div style="width: 400px; max-width: 400px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: center;">
+    <img src="{{ '/images/rendering-multiple-geometries/instancing-balloons.jpg' | relative_url }}" style="max-width: 100%;">
+    <div style="font-size: 10px; color: #808080;">유사한 형태의 도형을 여러개 렌더링하는 경우 (유니티 GPU Instancing)</div>
+    <div style="font-size: 10px; color: #808080;">이미지 출처: https://unity3d.college/2017/04/25/unity-gpu-instancing/</div>
+</div>
+<br>
+<h4>three js 에도 이에 해당하는 InstancedMesh라는 기능이 있습니다.</h4>
+<h4>draw call은 위에서 말씀드린 geomtries merge 케이스와 동일하지만, 모든 geometry 를 각각 생성해야 할 필요가 없기에 메모리 및 렌더링 시간 면에서 큰 이점이 있습니다.</h4>
+<h4>아래의 다이어그램은 1, 2, 3번 과정에서 gpu 에 전달되는 mesh 를 간략화 한 그림입니다.</h4>
+<div style="width: 1000px; max-width: 1000px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: center;">
+    <img src="{{ '/images/rendering-multiple-geometries/rendering_geometries.jpg' | relative_url }}" style="max-width: 100%;">
+</div>
+<br>
+<h4>아래의 예시는 translation 만 사용되었지만, 이 외에도 rotate, scale 등의 변환 역시 사용할 수 있습니다.</h4>
+<h4>mesh 를 따로 생성하는 것을 줄였던 것에 더해 geometry 까지 따로 생성하는 것을 줄이며, creation time 차이가 상당한 것을 확인할 수 있습니다.</h4>
+
+<pre><code class="language-javascript">
+    // instancedMesh 의 마지막 arguement에는 사용할 도형의 개수를 추가해줘야 합니다.
+    const mesh_1 = new THREE.InstancedMesh(base_geometry_1, material_1, x_range * y_range * z_range);
+    const mesh_2 = new THREE.InstancedMesh(base_geometry_2, material_2, x_range * y_range * z_range);
+
+    let current_total_index = 0;
+    for (let i = 0; i < x_range; i++) {
+        for (let j = 0; j < y_range; j++) {
+            for (let k = 0; k < z_range; k++) {
+                mesh_1.setMatrixAt(current_total_index, new THREE.Matrix4().makeTranslation(i * x_interval, j * y_interval, k * z_interval));
+                mesh_2.setMatrixAt(current_total_index, new THREE.Matrix4().makeTranslation(i * x_interval, j * y_interval, k * z_interval + 3));
+                current_total_index++;
+            }
+        }
+    }
+
+    scene.add(mesh_1);
+    scene.add(mesh_2);
+</code></pre>
+
+<br>
+<div id="draw_calls_display_3" style="text-align: center; font-size: 10px; font-weight: bold; color: #000000;">Draw Calls: 0</div>
+<div id="mesh_creation_time_display_3" style="text-align: center; font-size: 10px; font-weight: bold; color: #000000;">Mesh Creation Time: 0</div>
+<div id="threejs-scene-4-instanced-mesh" style="width: 800px; height: 300px; margin: 0 auto; display: flex; justify-content: center; align-items: center;">
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'OrbitControls';
+        import * as BufferGeometryUtils from 'BufferGeometryUtils';
+
+        (function() {
+            const [width, height] = [800, 200];
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xeeeeee);
+            const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer();
+            renderer.setSize(width, height);
+            document.getElementById('threejs-scene-4-instanced-mesh').appendChild(renderer.domElement);
+
+            const mesh_creation_time_start = performance.now();
+            const base_geometry_1 = new THREE.BoxGeometry(20, 10, 3);
+            const base_geometry_2 = new THREE.BoxGeometry(20, 10, 1);
+            const [x_range, y_range, z_range] = [10, 10, 50];
+            const [x_interval, y_interval, z_interval] = [60, 40, 4];
+
+            const material_1 = new THREE.MeshBasicMaterial({ color: 0x808080, transparent: true, opacity: 0.2 });
+            const material_2 = new THREE.MeshBasicMaterial({ color: 0x111111, transparent: true, opacity: 0.2 });
+            const mesh_1 = new THREE.InstancedMesh(base_geometry_1, material_1, x_range * y_range * z_range);
+            const mesh_2 = new THREE.InstancedMesh(base_geometry_2, material_2, x_range * y_range * z_range);
+            let current_total_index = 0;
+            for (let i = 0; i < x_range; i++) {
+                for (let j = 0; j < y_range; j++) {
+                    for (let k = 0; k < z_range; k++) {
+                        mesh_1.setMatrixAt(current_total_index, new THREE.Matrix4().makeTranslation(i * x_interval, j * y_interval, k * z_interval));
+                        mesh_2.setMatrixAt(current_total_index, new THREE.Matrix4().makeTranslation(i * x_interval, j * y_interval, k * z_interval + 3));
+                        current_total_index++;
+                    }
+                }
+            }
+            scene.add(mesh_1);
+            scene.add(mesh_2);
+            const mesh_creation_time_end = performance.now();
+
+            const controls = new OrbitControls(camera, renderer.domElement);
+
+            camera.position.set(x_range * x_interval / 2, y_range * y_interval * 1.3, z_range * z_interval / 2);
+            controls.target.set(x_range * x_interval / 2, 0, z_range * z_interval / 2);
+
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+
+                document.getElementById('draw_calls_display_3').textContent = `Draw Calls: ${renderer.info.render.calls}`;
+            }
+            animate();
+            document.getElementById('mesh_creation_time_display_3').textContent = `Mesh Creation Time: ${(mesh_creation_time_end - mesh_creation_time_start).toFixed(3)} ms`;
+        })();
+    </script>
+</div>
+<h4>물론 translate(이동), rotate(회전), scale(크기변환) 변환만으로는 모든 경우의 수를 커버할 수 없기에, 그럴 경우 merged geometry 방법도 혼용해야 하는 경우가 많고, 적용하고 있습니다.</h4>
+<br>
+<br>
+<hr>
+<h2>마치며</h2>
+<br>
+<h4>three js 렌더링을 최적화하는 데는 이 밖에도 다양한 방법이 있지만, 이번 글에서는 우선 geometry 개수에 따른 렌더링 부담을 줄이는 방법에 대해 말씀드렸습니다.</h4>
+<h4>이 밖에도 겪었던 메모리 누수나 다른 원인에서 있었던 부하 문제 등을 수정했던 경험을 추후 공유드리겠습니다.</h4>
+<h4>감사합니다.</h4>
