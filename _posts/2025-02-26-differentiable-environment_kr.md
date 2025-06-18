@@ -1,12 +1,11 @@
 ---
 layout: post
 title:  "Finding Differentiable Environments"
-thumbnail: /images/differentiable-environment/env_1/adamw/loss_graph.gif
-tag: "
-    #PoC
-    #Research
-"
-author: jaeung-swk
+thumbnail: /assets/images/differentiable-environment/env_1/adamw/loss_graph.gif
+# tag: "
+#     #PoC
+#     #Research
+# "
 ---
 
 ## **Abstract**
@@ -31,12 +30,12 @@ author: jaeung-swk
 <br>
 위처럼 로직이 단순할 떄는 파라미터와 결과 사이의 직관성이 크게 떨어지는 일은 많지 않을 것입니다.
 
-<img src="{{ '/images/differentiable-environment/Algorithm.jpg' | relative_url }}" style="width: 100%; max-width: 500px; height: auto; margin: 0 auto; display: block;">
-<img src="{{ '/images/differentiable-environment/circle.gif' | relative_url }}" style="width: 100%; max-width: 500px; height: auto; margin: 0 auto; display: block;">
+<img src="{{ '/assets/images/differentiable-environment/Algorithm.jpg' | relative_url }}" style="width: 100%; max-width: 500px; height: auto; margin: 0 auto; display: block;">
+<img src="{{ '/assets/images/differentiable-environment/circle.gif' | relative_url }}" style="width: 100%; max-width: 500px; height: auto; margin: 0 auto; display: block;">
 
 그 때의 radius - loss 그래프와 같이 표현하면 다음과 같습니다. (x >= 0 인 경우)
 
-<img src="{{ '/images/differentiable-environment/graph_0.png' | relative_url }}" style="width: auto; max-height: 200px; height: auto; margin: 0 auto; display: block;">
+<img src="{{ '/assets/images/differentiable-environment/graph_0.png' | relative_url }}" style="width: auto; max-height: 200px; height: auto; margin: 0 auto; display: block;">
 
 <br><br>
 하지만 알고리즘이 점점 복잡해질수록 이 환경은 블랙박스가 되어가고,<br>
@@ -47,12 +46,12 @@ author: jaeung-swk
 - 강화학습의 모델까지 생각할 것도 없이, ga와 같은 최적화 과정에서도 파라미터 변경에 따른 결과의 "측정"은 필요합니다.
 - 하지만 파라미터의 차이가 환경에 미칠 영향의 랜덤성이 너무 커 파라미터 변경에 따른 결과 역시 지나치게 랜덤해집니다.
 
-<img src="{{ '/images/differentiable-environment/graph_1.jpg' | relative_url }}" style="width: auto; max-height: 200px; height: auto; margin: 0 auto; display: block;">
+<img src="{{ '/assets/images/differentiable-environment/graph_1.jpg' | relative_url }}" style="width: auto; max-height: 200px; height: auto; margin: 0 auto; display: block;">
 
 위의 그림은 파라미터 하나의 경우에만의 예시인데도 문제가 바로 보입니다. 하지만 건축 알고리즘 관련 엔진에서는 당연히 파라미터를 한두개 사용하는 것으로 끝낼 수 있는 경우는 존재하지 않습니다. 그러면 다음과 같은 경향을 확인할 수 있는 부드러운 곡면은 물론이고, 최적화 모듈은 경향성을 파악하는 것이 사실상 불가능에 가깝다는 것입니다.
 <br><br>
 <div style="text-align: center; font-size: 10px;">
-    <img src="{{ '/images/differentiable-environment/graph_2_merging_graphs.jpg' | relative_url }}" style="width: auto; max-height: 200px; height: auto; margin: 0 auto; display: block;">
+    <img src="{{ '/assets/images/differentiable-environment/graph_2_merging_graphs.jpg' | relative_url }}" style="width: auto; max-height: 200px; height: auto; margin: 0 auto; display: block;">
     continuous 한 [parameter - loss] 없이 continuous 한 엔진은 없습니다.
 </div>
 <br><br>
@@ -81,7 +80,7 @@ author: jaeung-swk
     - 즉, **gradient 단절이 확실히 존재**합니다.
 
 <div style="text-align: center; font-size: 10px;">
-    <img src="{{ '/images/differentiable-environment/env_2_param_explain.jpg' | relative_url }}" style="width: auto; max-height: 150px; height: auto; margin: 0 auto; display: block;">
+    <img src="{{ '/assets/images/differentiable-environment/env_2_param_explain.jpg' | relative_url }}" style="width: auto; max-height: 150px; height: auto; margin: 0 auto; display: block;">
     Environment 2 의 4개 사분면 분리를 위한 0.5 사용
 </div>
 
@@ -92,7 +91,7 @@ author: jaeung-swk
 <br><br>
     - 즉, 두 환경 모두 동일한 2D 평면의 모든 점 (x, y) ∈ ℝ² 에 대해, 이를 생성할 수 있는 파라미터가 일대일 대응으로 존재해, 두 환경은 동일한 탐색 영역을 바라보고 있습니다.
 
-<img src="{{ '/images/differentiable-environment/parameter_definition.jpg' | relative_url }}" style="width: auto; max-height: 500px; height: auto; margin: 0 auto; display: block;">
+<img src="{{ '/assets/images/differentiable-environment/parameter_definition.jpg' | relative_url }}" style="width: auto; max-height: 500px; height: auto; margin: 0 auto; display: block;">
 
 <hr>
 
@@ -153,50 +152,50 @@ author: jaeung-swk
 <br>
     - 환경 1
 <div style="display: flex; justify-content: center; gap: 20px; margin: 20px 0;">
-    <img src="{{ '/images/differentiable-environment/env_1/simple_grad_descent/loss_graph.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
-    <img src="{{ '/images/differentiable-environment/env_1/simple_grad_descent/animation.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
+    <img src="{{ '/assets/images/differentiable-environment/env_1/simple_grad_descent/loss_graph.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
+    <img src="{{ '/assets/images/differentiable-environment/env_1/simple_grad_descent/animation.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
 </div>
 
 <div style="display: flex; justify-content: center; gap: 20px; margin: 20px 0;">
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_1/simple_grad_descent/loss_1_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_1/simple_grad_descent/loss_1_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 1</div>
     </div>
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_1/simple_grad_descent/loss_2_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_1/simple_grad_descent/loss_2_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 2</div>
     </div>
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_1/simple_grad_descent/loss_3_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_1/simple_grad_descent/loss_3_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 3</div>
     </div>
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_1/simple_grad_descent/loss_4_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_1/simple_grad_descent/loss_4_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 4</div>
     </div>
 </div>
 <br>
     - 환경 2
 <div style="display: flex; justify-content: center; gap: 20px; margin: 20px 0;">
-    <img src="{{ '/images/differentiable-environment/env_2/simple_grad_descent/loss_graph.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
-    <img src="{{ '/images/differentiable-environment/env_2/simple_grad_descent/animation.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
+    <img src="{{ '/assets/images/differentiable-environment/env_2/simple_grad_descent/loss_graph.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
+    <img src="{{ '/assets/images/differentiable-environment/env_2/simple_grad_descent/animation.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
 </div>
 
 <div style="display: flex; justify-content: center; gap: 20px; margin: 20px 0;">
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_2/simple_grad_descent/loss_1_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_2/simple_grad_descent/loss_1_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 1</div>
     </div>
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_2/simple_grad_descent/loss_2_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_2/simple_grad_descent/loss_2_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 2</div>
     </div>
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_2/simple_grad_descent/loss_3_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_2/simple_grad_descent/loss_3_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 3</div>
     </div>
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_2/simple_grad_descent/loss_4_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_2/simple_grad_descent/loss_4_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 4</div>
     </div>
 </div>
@@ -213,25 +212,25 @@ author: jaeung-swk
 <br>
     - 환경 1
 <div style="display: flex; justify-content: center; gap: 20px; margin: 20px 0;">
-    <img src="{{ '/images/differentiable-environment/env_1/adamw/loss_graph.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
-    <img src="{{ '/images/differentiable-environment/env_1/adamw/animation.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
+    <img src="{{ '/assets/images/differentiable-environment/env_1/adamw/loss_graph.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
+    <img src="{{ '/assets/images/differentiable-environment/env_1/adamw/animation.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
 </div>
 
 <div style="display: flex; justify-content: center; gap: 20px; margin: 20px 0;">
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_1/adamw/loss_1_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_1/adamw/loss_1_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 1</div>
     </div>
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_1/adamw/loss_2_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_1/adamw/loss_2_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 2</div>
     </div>
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_1/adamw/loss_3_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_1/adamw/loss_3_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 3</div>
     </div>
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_1/adamw/loss_4_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_1/adamw/loss_4_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 4</div>
     </div>
 </div>
@@ -239,25 +238,25 @@ author: jaeung-swk
 <br>
     - 환경 2
 <div style="display: flex; justify-content: center; gap: 20px; margin: 20px 0;">
-    <img src="{{ '/images/differentiable-environment/env_2/adamw/loss_graph.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
-    <img src="{{ '/images/differentiable-environment/env_2/adamw/animation.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
+    <img src="{{ '/assets/images/differentiable-environment/env_2/adamw/loss_graph.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
+    <img src="{{ '/assets/images/differentiable-environment/env_2/adamw/animation.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
 </div>
 
 <div style="display: flex; justify-content: center; gap: 20px; margin: 20px 0;">
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_2/adamw/loss_1_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_2/adamw/loss_1_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 1</div>
     </div>
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_2/adamw/loss_2_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_2/adamw/loss_2_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 2</div>
     </div>
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_2/adamw/loss_3_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_2/adamw/loss_3_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 3</div>
     </div>
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_2/adamw/loss_4_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_2/adamw/loss_4_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 4</div>
     </div>
 </div>
@@ -270,7 +269,7 @@ author: jaeung-swk
 - 하지만 연산을 매번 충분히 주어지는 것은 불가능 하는 경우가 많습니다. 최대한 답을 향해 빨리 나아가는 것 역시 중요합니다. 환경 1이 확실히 초기 안정성이 더 좋은 것 역시 확인이 가능합니다.
 
 <div style="text-align: center; font-size: 10px;">
-    <img src="{{ '/images/differentiable-environment/ga_diff.jpg' | relative_url }}" style="width: auto; max-height: 150px; height: auto; margin: 0 auto; display: block;">
+    <img src="{{ '/assets/images/differentiable-environment/ga_diff.jpg' | relative_url }}" style="width: auto; max-height: 150px; height: auto; margin: 0 auto; display: block;">
     두 환경의 초기 그래프 차이
 </div>
 
@@ -279,25 +278,25 @@ author: jaeung-swk
 <br>
     - 환경 1
 <div style="display: flex; justify-content: center; gap: 20px; margin: 20px 0;">
-    <img src="{{ '/images/differentiable-environment/env_1/ga/loss_graph.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
-    <img src="{{ '/images/differentiable-environment/env_1/ga/animation.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
+    <img src="{{ '/assets/images/differentiable-environment/env_1/ga/loss_graph.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
+    <img src="{{ '/assets/images/differentiable-environment/env_1/ga/animation.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
 </div>
 
 <div style="display: flex; justify-content: center; gap: 20px; margin: 20px 0;">
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_1/ga/loss_1_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_1/ga/loss_1_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 1</div>
     </div>
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_1/ga/loss_2_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_1/ga/loss_2_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 2</div>
     </div>
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_1/ga/loss_3_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_1/ga/loss_3_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 3</div>
     </div>
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_1/ga/loss_4_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_1/ga/loss_4_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 4</div>
     </div>
 </div>
@@ -306,25 +305,25 @@ author: jaeung-swk
 <br>
     - 환경 2
 <div style="display: flex; justify-content: center; gap: 20px; margin: 20px 0;">
-    <img src="{{ '/images/differentiable-environment/env_2/ga/loss_graph.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
-    <img src="{{ '/images/differentiable-environment/env_2/ga/animation.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
+    <img src="{{ '/assets/images/differentiable-environment/env_2/ga/loss_graph.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
+    <img src="{{ '/assets/images/differentiable-environment/env_2/ga/animation.gif' | relative_url }}" style="width: auto; max-height: 200px; height: auto;">
 </div>
 
 <div style="display: flex; justify-content: center; gap: 20px; margin: 20px 0;">
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_2/ga/loss_1_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_2/ga/loss_1_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 1</div>
     </div>
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_2/ga/loss_2_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_2/ga/loss_2_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 2</div>
     </div>
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_2/ga/loss_3_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_2/ga/loss_3_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 3</div>
     </div>
     <div style="text-align: center; max-width: 15%; max-height: auto; height: auto;">
-        <img src="{{ '/images/differentiable-environment/env_2/ga/loss_4_loss_graph.gif' | relative_url }}" style="">
+        <img src="{{ '/assets/images/differentiable-environment/env_2/ga/loss_4_loss_graph.gif' | relative_url }}" style="">
         <div>Loss 4</div>
     </div>
 </div>
