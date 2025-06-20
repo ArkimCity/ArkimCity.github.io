@@ -7,7 +7,7 @@ tags: [PoC, Research, Kubernetes, Checkpoint, S3, GA]
 
 ## Kubernetes 작업에서 Checkpoint의 필요성
 
-![Kubernetes 환경에서 시간이 오래 걸리는 작업]({{ site.url }}/assets/images/pods-and-checkpoints/pods-and-checkpoints.png)
+<img src="/assets/images/pods-and-checkpoints/pods-and-checkpoints.png"/>
 
 Kubernetes 환경에서 시간이 오래 걸리는 작업(예: 대규모 데이터 처리, 머신러닝 학습, 고성능 도형 시뮬레이션 등)을 수행할 때,
 
