@@ -7,6 +7,8 @@ tags: [PoC, Research, Kubernetes, Checkpoint, S3, GA]
 
 ## Kubernetes 작업에서 Checkpoint의 필요성
 
+![Kubernetes 환경에서 시간이 오래 걸리는 작업]({{ site.url }}/assets/images/pods-and-checkpoints/pods-and-checkpoints.png)
+
 Kubernetes 환경에서 시간이 오래 걸리는 작업(예: 대규모 데이터 처리, 머신러닝 학습, 고성능 도형 시뮬레이션 등)을 수행할 때,
 
 spot instance 에서의 경쟁 상황에서 작업이 중단되는 경우, 메모리 부족에 따른 중단 등 **pod가 중간에 실패하거나 재시작되는 경우가 종종 발생합니다.**
@@ -68,7 +70,7 @@ def load_checkpoint(key=checkpoint_key):
         return None
 
 # 사용 예시
-generation = 0
+generation_to_run = 0 # 이번에 실행할 generation 번호
 population = None
 best_solution = None
 best_fitness = None
@@ -77,24 +79,26 @@ random_seed = 42  # 예시: 실험 재현성을 위해 seed도 저장
 # checkpoint 불러오기
 checkpoint = load_checkpoint()
 if checkpoint:
-    generation = checkpoint['generation']
+    # 마지막으로 성공한 generation 다음 번호부터 시작
+    generation_to_run = checkpoint['generation'] + 1
     population = checkpoint['population']
     best_solution = checkpoint['best_solution']
     best_fitness = checkpoint['best_fitness']
     random_seed = checkpoint.get('random_seed', 42)
 
-while generation < MAX_GENERATION:
-    # ... GA 연산 ...
+while generation_to_run < MAX_GENERATION:
+    # ... GA 연산 (현재 generation_to_run에 대한) ...
     # population, best_solution, best_fitness 업데이트
-    # checkpoint 저장
+
+    # 현재 generation 작업이 성공적으로 끝났으므로 checkpoint 저장
     save_checkpoint({
-        'generation': generation,
+        'generation': generation_to_run, # 성공적으로 완료된 generation 번호
         'population': population,  # 다음 세대에 전달할 parameter set
         'best_solution': best_solution,
         'best_fitness': best_fitness,
         'random_seed': random_seed
     })
-    generation += 1
+    generation_to_run += 1
 ```
 
 > **참고:** 실험의 완전한 재현성을 위해서는 random seed, 환경 정보도 함께 저장하는 것이 좋습니다. (동일한 docker image 내에서 실행되는 경우에는 대부분 필요하지 않습니다.) 필요에 따라 checkpoint에 추가하세요.
@@ -103,7 +107,9 @@ while generation < MAX_GENERATION:
 
 실제 예시로, 한 generation에 약 10초가 걸리는 GA 작업을 50 generation 동안 수행한다고 가정해보겠습니다. 중간에 pod가 실패하여 작업이 중단되는 상황을 비교해보면 다음과 같습니다.
 
-### Case 1: Checkpoint 없이 처음부터 재시작
+### 시간 비교
+
+#### case 1 - no checkpoint
 - 1 ~ 30 (30 generation 동안 정상 진행, 이후 실패)
 - 1 ~ 25 (25 generation 동안 정상 진행, 이후 실패)
 - 1 ~ 50 (50 generation 동안 정상 진행, 최종 성공)
@@ -111,20 +117,55 @@ while generation < MAX_GENERATION:
 총 수행한 generation 수: 30 + 25 + 50 = **105회**
 - 총 소요 시간: 105 × 10초 = **1,050초 (약 17.5분)**
 
-### Case 2: Checkpoint를 활용한 재시작
+#### case 2 - checkpoint
 - 1 ~ 30 (30 generation 동안 정상 진행, 이후 실패)
 - 30 ~ 50 (21 generation 동안 정상 진행, 최종 성공)
 
 총 수행한 generation 수: 30 + 21 = **51회**
 - 총 소요 시간: 51 × 10초 = **510초 (약 8.5분)**
 
-### 비교 및 효과
+#### 비교 및 효과
 - checkpoint 없이 재시작: **1,050초**
 - checkpoint로 이어서 재시작: **510초**
 - **절반 이상의 시간과 리소스를 절약**할 수 있습니다.
 
 ### 최종 성공 가능성 향상
-checkpoint를 활용하면, pod가 여러 번 실패하더라도 항상 마지막 저장 지점부터 이어서 작업을 재개할 수 있습니다. 이는 단순히 시간을 아끼는 것뿐만 아니라, **실험의 최종 성공 가능성**도 크게 높여줍니다. 반복적인 실패에도 불구하고, 전체 실험을 완주할 수 있는 확률이 높아집니다.
+checkpoint를 활용하면, pod가 여러 번 실패하더라도 항상 마지막 저장 지점부터 이어서 작업을 재개할 수 있습니다. 이는 단순히 **시간을 아끼는 것**뿐만 아니라, **실험의 최종 성공 가능성**도 크게 높여줍니다. 반복적인 실패에도 불구하고, 전체 실험을 완주할 수 있는 확률이 높아집니다.
+
+예를 들어, 각 generation이 98% 확률로 성공한다고 가정하고, 총 50개의 generation을 최대 3번의 pod retry 안에 모두 성공시켜야 하는 상황을 비교해보겠습니다.
+
+#### case 1 - no checkpoint
+```python
+# 각 try 의 실패 확률 = 1 - 0.98 ** 50
+>>> 1 - 0.98 ** 50
+0.6358303199128832
+
+# 세번 모두 실패할 확률
+>>> 0.6358303199128832 ** 3
+0.2543740234375
+
+# 세번 중 최소 한번 성공할 확률
+>>> 1 - 0.2543740234375
+0.7456259765625
+```
+즉, 약 **75%** 확률로 최종 성공할 수 있습니다.
+
+#### case 2 - checkpoint
+```python
+# 개별 generation 하나가 세 번 모두 실패할 확률
+>>> 0.02 ** 3
+8e-06
+
+# 이 값은 "하나의 generation이 pod 1, 2, 3 모두에서 실패할 확률"을 의미합니다.
+# 실제로 generation 단위로 retry가 되는 것은 아니지만,
+# pod-level retry + checkpoint resume 구조에서 어떤 generation은 최대 3번까지 시도될 수 있습니다.
+
+# 50개의 generation이 모두 3번 이내에 성공할 확률
+>>> (1 - 8e-06) ** 50
+0.9996000399986667
+```
+즉, 약 **99.96%** 확률로 최종 성공할 수 있습니다.
+
 
 > **요약:** checkpoint는 retry 상황에서 시간과 리소스를 절약할 뿐만 아니라, 실험의 성공률까지 높여주는 중요한 전략입니다.
 
