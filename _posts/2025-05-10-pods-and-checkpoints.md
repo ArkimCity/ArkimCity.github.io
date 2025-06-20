@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "시간과 성공률을 고려한 Kubernetes 환경에서의 Checkpoint"
+title:  "Checkpointing for Kubernetes Pods"
 thumbnail: /assets/images/pods-and-checkpoints/pods-and-checkpoints.png
 tags: [PoC, Research, Kubernetes, Checkpoint, S3, GA]
 ---
