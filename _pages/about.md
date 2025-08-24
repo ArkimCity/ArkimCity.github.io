@@ -45,7 +45,7 @@ comments: true
 
 <hr>
 
-<h2>2. 요약 (Summary)</h2>
+<h2>2. Summary</h2>
 
 <p><strong>"흐름이 궁금한 개발자"</strong></p>
 
@@ -53,7 +53,7 @@ comments: true
 
 <hr>
 
-<h2>3. 기술 스택 (Skills)</h2>
+<h2>3. Skills</h2>
 
 <p><strong>Frontend:</strong> React, Three.js, WebGL, TypeScript, JavaScript<br>
 <strong>Backend:</strong> Python, FastAPI<br>
@@ -87,7 +87,7 @@ comments: true
 
 <hr>
 
-<h2>5. 학력 (Education)</h2>
+<h2>5. Education</h2>
 
 <h3>홍익대학교: 건축학과 (2013.03 ~ 2020.02)</h3>
 
