@@ -2,6 +2,7 @@
 layout: post
 title:  "Finding Differentiable Environments"
 thumbnail: /assets/images/differentiable-environment/env_1/adamw/loss_graph.gif
+featured: true
 # tag: "
 #     #PoC
 #     #Research
