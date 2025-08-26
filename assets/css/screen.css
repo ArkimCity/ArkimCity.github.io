@@ -4,7 +4,7 @@ Copyright: Sal, WowThemes.net, https://www.wowthemes.net
 License: https://www.wowthemes.net/freebies-license/
 */
 @media screen and (min-width:1500px) {
-    html { font-size:18px; } /* Increase the font size on higher resolutions */
+    html { font-size:14px; } /* Decrease the font size on higher resolutions */
     .container {max-width:80%;}
 }
 .mainheading {
@@ -28,12 +28,12 @@ pre {
     width: 100%;
     padding: 7px;
     font-family: monospace, sans-serif;
-    font-size: .9rem;
+    font-size: 0.75rem;
     white-space: pre;
     overflow: auto;
     background: #fff;
     border-radius: 0px;
-    line-height: 1.6;
+    line-height: 1.4;
     color: #333;
     margin-bottom: -rem;
 }
@@ -65,10 +65,10 @@ section.recent-posts {
 
 .section-title h2 {
     border-bottom: 1px solid rgba(0, 0, 0, .125);
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     font-weight: 700;
-    font-size: 1.4rem;
-    margin-bottom: 27px;
+    font-size: 1.1rem;
+    margin-bottom: 22px;
 }
 
 .section-title span {
@@ -142,7 +142,7 @@ section.recent-posts {
 
 .listfeaturedtag h2.card-title,
 .listrecent h2.card-title {
-    font-size: 1.3rem;
+    font-size: 1rem;
     font-weight: 700;
     line-height: 1.25;
 }
@@ -150,8 +150,8 @@ section.recent-posts {
 .listfeaturedtag h4.card-text,
 .listrecent h4.card-text {
     color: rgba(0, 0, 0, .44);
-    font-size: 0.95rem;
-    line-height: 1.6;
+    font-size: 0.8rem;
+    line-height: 1.5;
     font-weight: 400;
 }
 
@@ -289,7 +289,7 @@ span.post-read-more a:hover {
 
 .mediumnavigation .nav-item,
 .dropdown-menu {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 .mediumnavigation .search-icon {
@@ -311,6 +311,7 @@ span.post-read-more a:hover {
 .mainheading h1.posttitle {
     font-weight: 700;
     margin-bottom: 1rem;
+    font-size: 1.8rem;
 }
 
 .footer {
@@ -331,8 +332,8 @@ span.post-read-more a:hover {
 
 .article-post {
     font-family: Merriweather;
-    font-size: 1.1rem;
-    line-height: 1.84;
+    font-size: 0.9rem;
+    line-height: 1.6;
     color: rgba(0, 0, 0, .8);
 }
 
