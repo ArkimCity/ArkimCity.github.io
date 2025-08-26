@@ -64,36 +64,41 @@ def load_checkpoint(key=checkpoint_key):
     except s3.exceptions.NoSuchKey:
         return None
 
-# 사용 예시
-generation_to_run = 0 # 이번에 실행할 generation 번호
-population = None
-best_solution = None
-best_fitness = None
-random_seed = 42  # 예시: 실험 재현성을 위해 seed도 저장
+def main():
+    # 사용 예시
+    generation_to_run = 0 # 이번에 실행할 generation 번호
+    population = None
+    best_solution = None
+    best_fitness = None
+    random_seed = 42  # 예시: 실험 재현성을 위해 seed도 저장
+    MAX_GENERATION = 100  # 예시 값
 
-# checkpoint 불러오기
-checkpoint = load_checkpoint()
-if checkpoint:
-    # 마지막으로 성공한 generation 다음 번호부터 시작
-    generation_to_run = checkpoint['generation'] + 1
-    population = checkpoint['population']
-    best_solution = checkpoint['best_solution']
-    best_fitness = checkpoint['best_fitness']
-    random_seed = checkpoint.get('random_seed', 42)
+    # checkpoint 불러오기
+    checkpoint = load_checkpoint()
+    if checkpoint:
+        # 마지막으로 성공한 generation 다음 번호부터 시작
+        generation_to_run = checkpoint['generation'] + 1
+        population = checkpoint['population']
+        best_solution = checkpoint['best_solution']
+        best_fitness = checkpoint['best_fitness']
+        random_seed = checkpoint.get('random_seed', 42)
 
-while generation_to_run < MAX_GENERATION:
-    # ... GA 연산 (현재 generation_to_run에 대한) ...
-    # population, best_solution, best_fitness 업데이트
+    while generation_to_run < MAX_GENERATION:
+        # ... GA 연산 (현재 generation_to_run에 대한) ...
+        # population, best_solution, best_fitness 업데이트
 
-    # 현재 generation 작업이 성공적으로 끝났으므로 checkpoint 저장
-    save_checkpoint({
-        'generation': generation_to_run, # 성공적으로 완료된 generation 번호
-        'population': population,  # 다음 세대에 전달할 parameter set
-        'best_solution': best_solution,
-        'best_fitness': best_fitness,
-        'random_seed': random_seed
-    })
-    generation_to_run += 1
+        # 현재 generation 작업이 성공적으로 끝났으므로 checkpoint 저장
+        save_checkpoint({
+            'generation': generation_to_run, # 성공적으로 완료된 generation 번호
+            'population': population,  # 다음 세대에 전달할 parameter set
+            'best_solution': best_solution,
+            'best_fitness': best_fitness,
+            'random_seed': random_seed
+        })
+        generation_to_run += 1
+
+if __name__ == "__main__":
+    main()
 ```
 
 > **참고:** 실험의 완전한 재현성을 위해서는 random seed, 환경 정보도 함께 저장하는 것이 좋습니다. (동일한 docker image 내에서 실행되는 경우에는 대부분 필요하지 않습니다.) 필요에 따라 checkpoint에 추가하세요.
