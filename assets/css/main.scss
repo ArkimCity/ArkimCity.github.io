@@ -5,27 +5,117 @@
 
 /* 이력서 페이지 제목 크기 조정 */
 .layout-page .article-post h2 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+    margin-top: 1.8rem;
+    margin-bottom: 0.8rem;
+}
+
+.layout-page .article-post h3 {
+    font-size: 1.1rem;
+    margin-top: 1.4rem;
+    margin-bottom: 0.6rem;
+}
+
+.layout-page .article-post h4 {
+    font-size: 1rem;
+    margin-top: 1.2rem;
+    margin-bottom: 0.4rem;
+}
+
+.layout-page .article-post h5 {
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    margin-bottom: 0.4rem;
+}
+
+/* 전체적인 글자 크기 조정 */
+body {
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.article-post {
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.article-post h1 {
+    font-size: 1.8rem;
     margin-top: 2rem;
     margin-bottom: 1rem;
 }
 
-.layout-page .article-post h3 {
-    font-size: 1.25rem;
+.article-post h2 {
+    font-size: 1.4rem;
+    margin-top: 1.8rem;
+    margin-bottom: 0.8rem;
+}
+
+.article-post h3 {
+    font-size: 1.2rem;
     margin-top: 1.5rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.6rem;
 }
 
-.layout-page .article-post h4 {
+.article-post h4 {
     font-size: 1.1rem;
-    margin-top: 1.25rem;
+    margin-top: 1.3rem;
     margin-bottom: 0.5rem;
 }
 
-.layout-page .article-post h5 {
+.article-post h5 {
     font-size: 1rem;
+    margin-top: 1.1rem;
+    margin-bottom: 0.4rem;
+}
+
+.article-post h6 {
+    font-size: 0.9rem;
     margin-top: 1rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
+}
+
+.article-post p {
+    margin-bottom: 0.8rem;
+}
+
+.article-post ul,
+.article-post ol {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+}
+
+.article-post li {
+    margin-bottom: 0.3rem;
+}
+
+/* 코드 블록 글자 크기 조정 */
+pre {
+    font-size: 0.8rem;
+    line-height: 1.4;
+    padding: 0.8rem;
+}
+
+code {
+    font-size: 0.85rem;
+}
+
+/* 제목 크기 조정 */
+.mainheading h1 {
+    font-size: 2rem;
+}
+
+.section-title h2 {
+    font-size: 1.3rem;
+}
+
+/* 카드 제목 크기 조정 */
+.card-title {
+    font-size: 1.1rem;
+}
+
+.card-text {
+    font-size: 0.85rem;
 }
 
 // Import partials from `sass_dir` (defaults to `_sass`)

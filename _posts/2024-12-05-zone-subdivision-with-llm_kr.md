@@ -11,7 +11,6 @@ thumbnail: /assets/images/zone-subdivision-with-llm/Flowchart.png
 ---
 
 ## Introduction
-
 이 글에서는 반복적인 사이클을 통해 결과의 품질을 향상시키기 위해 대규모 언어 모델(LLM)을 피드백 루프에서 활용하는 방법을 살펴봅니다. LLM이 제공하는 초기 직관적 결과를 개선하는 것이 목표이며, 이는 LLM 내부의 피드백 메커니즘을 넘어서 LLM 외부의 최적화를 포함한 피드백 사이클을 통해 이루어집니다.
 
 <hr>
