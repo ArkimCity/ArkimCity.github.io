@@ -64,42 +64,44 @@ comments: true
 
 <h2>4. Education</h2>
 
-<h3>홍익대학교: 건축학과 (2013.03 ~ 2020.02)</h3>
+<h3>홍익대학교: 건축학과 - (2013.03 ~ 2020.02)</h3>
 
-<h3>University of Pennsylvania: Master of Science in Design - Advanced Architectural Design (2020.09 ~ 2020.10 중퇴)</h3>
+<h3>University of Pennsylvania: Master of Science in Design - Advanced Architectural Design - (2020.09 ~ 2020.10 중퇴)</h3>
 
 <hr>
 
 <h2>5. 경력 및 프로젝트 경험 (Experience)</h2>
 
-<h3>스페이스워크: 컴퓨테이셔널 디자이너 (2021.05 ~ 현재)</h3>
+<h3>스페이스워크: 컴퓨테이셔널 디자이너 - (2021.05 ~ )</h3>
 
-<h4>건축 기본 계획 엔진 개발</h4>
+<h4>건축 기본 계획 엔진 개발 - (2021.05 ~ )</h4>
 <ul>
-    <li>소형 주택(landbook.net - 현재 미운영) 엔진 개발 / 기능 추가 및 버그 수정 등 보수</li>
-    <li>중/대형 주택(https://lbdeveloper.landbook.net/) 엔진 개발 / 기능 추가 및 버그 수정 등 보수</li>
+    <li>Kubernetes Pod 인스턴스로 실행되는 Python 엔진 (평균 실행시간 약 30분)</li>
+    <li>소형 주택(landbook.net - 현재 엔진 미운영) 건축 설계 엔진 개발 / 기능 추가 및 버그 수정 등 보수</li>
+    <li>중/대형 주택(https://lbdeveloper.landbook.net/) 건축 설계 엔진 개발 / 기능 추가 및 버그 수정 등 보수</li>
 </ul>
 
 
-<h4>React 기반 3D 렌더링 모듈 담당</h4>
+<h4>Three.js 기반 3D 렌더링 모듈 담당 - (2023.04 ~ )</h4>
 <ul>
     <li>Three.js 기반 건축 3D 모델 시각화 구현</li>
     <li>3D 내부 캡처 기능 개발 및 geometry 증가 시 성능 최적화</li>
-    <li>다중 geometry 렌더링 시 병목 현상 해결 (FPS 30% 향상)</li>
-    <li>Instancing 기법을 활용한 대용량 3D 모델 렌더링 최적화</li>
+    <li>다중 geometry 렌더링 시 병목 현상 개선</li>
+    <li>추상화된 엔진 결과 데이터로부터 건물 형상화 로직 작성</li>
     <li>사내 npm 패키지화 작업을 통한 배포 담당</li>
 </ul>
 
-<h4>사내 건축 엔진 테스트/QA 웹 페이지 개발</h4>
+<h4>사내 건축 엔진 테스트/QA 웹 페이지 개발 - (2023.08 ~ )</h4>
 <ul>
+    <li>React 기반 사내 건축 엔진 테스트/QA 페이지</li>
     <li>Dev 서버와의 데이터 연동, 테스트 UI 개선 및 QA 자동화 구현</li>
-    <li>사용자 편의 기능: 실시간 3D 모델 검증, 자동 테스트 스크립트</li>
-    <li>반응형 웹 디자인으로 다양한 디바이스 지원</li>
+    <li>실시간 3D 모델 검증, 자동 테스트 스크립트</li>
 </ul>
 
-<h4>건축 설계 엔진용 데이터 서버 개발</h4>
+<h4>건축 설계 엔진용 데이터 서버 개발 - (2023.08 ~ )</h4>
 <ul>
-    <li>RESTful fast API 서버 운영 담당</li>
+    <li>RESTful FastAPI 서버 운영 담당</li>
+    <li>엔진 실행에 필요한 건축 법규/필지 도형 등 데이터 쿼리용 서버</li>
 </ul>
 
 <hr>
