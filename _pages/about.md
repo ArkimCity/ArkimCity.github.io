@@ -76,8 +76,9 @@ comments: true
 
 <h4>건축 기본 계획 엔진 개발 - (2021.05 ~ )</h4>
 <ul>
-    <li>소형 주택(landbook.net - 현재 미운영) 엔진 개발 / 기능 추가 및 버그 수정 등 보수</li>
-    <li>중/대형 주택(https://lbdeveloper.landbook.net/) 엔진 개발 / 기능 추가 및 버그 수정 등 보수</li>
+    <li>Kubernetes Pod 인스턴스로 실행되는 Python 엔진 (평균 실행시간 약 30분)</li>
+    <li>소형 주택(landbook.net - 현재 엔진 미운영) 건축 설계 엔진 개발 / 기능 추가 및 버그 수정 등 보수</li>
+    <li>중/대형 주택(https://lbdeveloper.landbook.net/) 건축 설계 엔진 개발 / 기능 추가 및 버그 수정 등 보수</li>
 </ul>
 
 
@@ -99,7 +100,7 @@ comments: true
 
 <h4>건축 설계 엔진용 데이터 서버 개발 - (2023.08 ~ )</h4>
 <ul>
-    <li>RESTful fast API 서버 운영 담당</li>
+    <li>RESTful FastAPI 서버 운영 담당</li>
     <li>엔진 실행에 필요한 건축 법규/필지 도형 등 데이터 쿼리용 서버</li>
 </ul>
 
