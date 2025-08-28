@@ -10,7 +10,7 @@ featured: true
 hidden: false
 # rating: 4.5
 beforetoc: "목차"
-toc: true
+# toc: true
 ---
 
 ## 요약
