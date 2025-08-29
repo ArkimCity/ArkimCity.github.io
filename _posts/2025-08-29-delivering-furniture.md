@@ -13,7 +13,9 @@ hidden: false
 
 <img src="/assets/images/delivering-furniture/thumbnail.png" style="width: 800px; max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; align-items: center;">
 ## 개요
-쿠버네티스 포드 엔진에서 도형 연산을 통해 가구의 최적 위치를 계산하고, 백엔드에서 이 정보를 받아 프론트엔드에서 Three.js를 사용하여 3D 모델을 배치하는 작업이 필요했습니다. 3D 모델을 직접 스트리밍하지 않고 메타데이터만 전송하여 효율성을 극대화했습니다.
+- 쿠버네티스 포드 엔진에서 도형 연산을 통해 가구의 최적 위치를 계산하고, 백엔드에서 이 정보를 받아 프론트엔드에서 Three.js를 사용하여 3D 모델을 배치하는 작업이 필요했습니다. 3D 모델을 직접 스트리밍하지 않고 메타데이터만 전송하여 효율성을 개선했습니다.
+- cpu 사용률이 매우 높고 10초 이상 걸리는 길고 무거운 작업은 연산용 pod를 트리거합니다.
+- 엔진과 백엔드 서버는 10메가바이트씩 하는 obj 파일을 수정해서 저장한 뒤 직접 보내줄 필요는 없습니다. 백엔드 서버는 수정에 필요한 벡터 및 행렬 정보만 프론트에 주면 됩니다.
 
 ## 구조
 
@@ -34,10 +36,6 @@ hidden: false
 벡터와 행렬 연산을 통한 가구 배치 최적화:
 
 ```python
-from typing import List, Optional
-from dataclasses import dataclass
-import numpy as np
-
 @dataclass
 class Position3D:
     x: float; y: float; z: float
@@ -51,32 +49,17 @@ class FurniturePlacement:
     confidence_score: float
 
 class FurniturePlacementEngine:
-    def calculate_optimal_positions(self, room_bounds, furniture_types) -> List[FurniturePlacement]:
-        all_placements = []
-        
-        for furniture_type in furniture_types:
-            # 벡터 연산을 통한 가능한 위치들 계산
-            available_positions = self._find_available_positions(room_bounds, furniture_type)
-            
-            for position in available_positions:
-                # 행렬 변환을 통한 방향 최적화
-                optimal_rotation = self._calculate_optimal_rotation(furniture_type, position)
+
+    ...
                 
-                # 아핀 변환을 통한 최종 위치 결정
-                final_transform = self._apply_affine_transformation(position, optimal_rotation)
-                
-                # 신뢰도 점수 계산
-                confidence_score = self._calculate_confidence_score(final_transform, room_bounds)
-                
-                if confidence_score >= 0.7:
-                    placement = FurniturePlacement(
-                        furniture_type=furniture_type,
-                        position=final_transform['position'],
-                        rotation=final_transform['rotation'],
-                        scale=final_transform['scale'],
-                        confidence_score=confidence_score
-                    )
-                    all_placements.append(placement)
+                placement = FurniturePlacement(
+                    furniture_type=furniture_type,
+                    position=final_transform['position'],
+                    rotation=final_transform['rotation'],
+                    scale=final_transform['scale'],
+                    confidence_score=confidence_score
+                )
+                all_placements.append(placement)
         
         return sorted(all_placements, key=lambda p: p.confidence_score, reverse=True)
 ```
@@ -139,6 +122,8 @@ const useFurniturePlacement = () => {
 const Furniture = ({ placement }) => {
     const { position, rotation, scale, modelUrl } = placement;
     const obj = useLoader(OBJLoader, modelUrl);
+
+    // obj에 matrix 변환 적용
     
     return (
         <group
@@ -153,20 +138,9 @@ const Furniture = ({ placement }) => {
 
 // 메인 컴포넌트
 const FurniturePlacementApp = () => {
-    const [placements, setPlacements] = useState([]);
-    const { requestPlacement } = useFurniturePlacement();
     
-    const handlePlaceFurniture = async () => {
-        const result = await requestPlacement({
-            roomData: { width: 10, length: 8, height: 3 },
-            furnitureTypes: ['chair', 'table', 'sofa']
-        });
-        
-        if (result.placements) {
-            setPlacements(result.placements);
-        }
-    };
-    
+    ...
+
     return (
         <Canvas camera={{ position: [5, 5, 5] }}>
             <ambientLight intensity={0.5} />
