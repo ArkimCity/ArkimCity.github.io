@@ -64,151 +64,134 @@ class FurniturePlacementEngine:
         return sorted(all_placements, key=lambda p: p.confidence_score, reverse=True)
 ```
 
-### 2. 백엔드 API (비동기 처리)
+### 2. 백엔드 API
 
-쿠버네티스 엔진과의 비동기 통신:
+쿠버네티스 엔진과의 비동기 통신을 위한 두 단계 API 구조:
+
+**1단계: 작업 트리거 (Trigger)**
+- 사용자의 가구 배치 요청을 받아 쿠버네티스 엔진에 작업을 등록
+- 즉시 `jobId`와 `processing` 상태를 반환하여 응답성 확보
+- CPU 집약적 연산을 백그라운드에서 처리
+
+**2단계: 결과 확인 (Result)**
+- `jobId`를 통해 작업 완료 여부를 확인
+- 완료된 경우: CloudFront CDN에서 3D 모델 URL을 생성하여 배치 결과와 함께 반환
+- 진행 중인 경우: `finished: false` 상태 반환
+- 오류 발생 시: 에러 정보와 함께 반환
+
+이러한 분리된 구조를 통해 사용자는 즉시 응답을 받고, 프론트엔드에서는 주기적으로 결과를 확인하여 완료 시 3D 렌더링을 수행합니다.
+
+### 3. 프론트엔드 (Transformation Matrix 데이터를 받아 InstancedMesh 로 적용)
+
+**InstancedMesh와 Transformation Matrix를 활용한 최적화된 3D 렌더링:**
 
 ```typescript
-// 배치 요청 트리거
-app.post('/api/furniture/placement', async (req, res) => {
-    const jobId = await kubernetesEngine.triggerPlacementJob(req.body);
-    res.json({ jobId, status: 'processing' });
-});
+import { Canvas } from '@react-three/fiber';
+import * as THREE from 'three';
 
-// 결과 확인 API
-app.get('/api/furniture/result/:jobId', async (req, res) => {
-    const result = await kubernetesEngine.getJobResult(req.params.jobId);
-    
-    if (result.finished && !result.error) {
-        // CloudFront CDN에서 3D 모델 URL 생성
-        const placements = await Promise.all(
-            result.placements.map(async (placement) => ({
-                ...placement,
-                modelUrl: await cloudFrontService.getModelUrl(placement.furnitureType)
-            }))
+class FurniturePlacementRenderer {
+    private objectCache: { [key: string]: THREE.Object3D } = {};
+    private instancedMeshes: { [key: string]: THREE.InstancedMesh[] } = {};
+    private instancedMeshWireframes: { [key: string]: THREE.InstancedMesh[] } = {};
+    private instanceMatrices: { [key: string]: THREE.Matrix4[] } = {};
+
+    // 배치 업데이트 - Transformation Matrix 기반 변환
+    private updatePlacement(placement: Placement) {
+        const { name, original_plane, plane } = placement;
+
+        // 객체 로딩 확인
+        if (!this.objectCache[name]) {
+            console.warn(`Object ${name} not loaded yet`);
+            return;
+        }
+
+        // 변환 행렬 생성
+        const originalMatrix = new THREE.Matrix4();
+        const targetMatrix = new THREE.Matrix4();
+
+        // 원본 평면 행렬 설정
+        originalMatrix.set(
+            original_plane.x_axis[0], original_plane.y_axis[0], 0, original_plane.origin[0],
+            original_plane.x_axis[1], original_plane.y_axis[1], 0, original_plane.origin[1],
+            0, 0, 1, 0,
+            0, 0, 0, 1
         );
-        
-        res.json({ finished: true, placements });
-    } else {
-        res.json({ finished: result.finished, error: result.error });
+
+        // 타겟 평면 행렬 설정
+        targetMatrix.set(
+            plane.x_axis[0], plane.y_axis[0], 0, plane.origin[0],
+            plane.x_axis[1], plane.y_axis[1], 0, plane.origin[1],
+            0, 0, 1, 0,
+            0, 0, 0, 1
+        );
+
+        // 원본에서 타겟으로의 변환 행렬 계산
+        const originalInverse = originalMatrix.clone().invert();
+        const transformationMatrix = targetMatrix.clone().multiply(originalInverse);
+
+        // 인스턴스 행렬 배열 초기화
+        if (!this.instanceMatrices[name]) {
+            this.instanceMatrices[name] = [];
+        }
+
+        // 변환 행렬을 배열에 추가
+        this.instanceMatrices[name].push(transformationMatrix);
+
+        // 모든 인스턴스 행렬 업데이트
+        this.instancedMeshes[name].forEach(instancedMesh => {
+            this.instanceMatrices[name].forEach((matrix, index) => {
+                instancedMesh.setMatrixAt(index, matrix);
+            });
+            instancedMesh.instanceMatrix.needsUpdate = true;
+        });
+
+        // 와이어프레임 인스턴스도 동일하게 업데이트
+        this.instancedMeshWireframes[name].forEach(instancedMeshWireframe => {
+            this.instanceMatrices[name].forEach((matrix, index) => {
+                instancedMeshWireframe.setMatrixAt(index, matrix);
+            });
+            instancedMeshWireframe.instanceMatrix.needsUpdate = true;
+        });
     }
-});
-```
 
-### 3. 프론트엔드 (React Three Fiber)
-
-3D 렌더링 및 배치 결과 표시:
-
-```typescript
-import { Canvas, useLoader } from '@react-three/fiber';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-
-// API 서비스 훅
-const useFurniturePlacement = () => {
-    const requestPlacement = useCallback(async (request) => {
-        const { jobId } = await fetch('/api/furniture/placement', {
-            method: 'POST',
-            body: JSON.stringify(request)
-        }).then(res => res.json());
+    // API 서비스 훅
+    const useFurniturePlacement = () => {
+        const requestPlacement = useCallback(async (request) => {
+            const { jobId } = await fetch('/api/furniture/placement', {
+                method: 'POST',
+                body: JSON.stringify(request)
+            }).then(res => res.json());
+            
+            // 결과 폴링
+            return await pollForResult(jobId);
+        }, []);
         
-        // 결과 폴링
-        return await pollForResult(jobId);
-    }, []);
-    
-    return { requestPlacement };
-};
-
-// 가구 컴포넌트
-const Furniture = ({ placement }) => {
-    const { position, rotation, scale, modelUrl } = placement;
-    const obj = useLoader(OBJLoader, modelUrl);
-
-    // obj에 matrix 변환 적용
-    
-    return (
-        <group
-            position={[position.x, position.y, position.z]}
-            rotation={[rotation.x * Math.PI / 180, rotation.y * Math.PI / 180, rotation.z * Math.PI / 180]}
-            scale={[scale.x, scale.y, scale.z]}
-        >
-            <primitive object={obj} />
-        </group>
-    );
-};
+        return { requestPlacement };
+    };
+}
 
 // 메인 컴포넌트
 const FurniturePlacementApp = () => {
-    
-    ...
+    const [placements, setPlacements] = useState([]);
+    const { requestPlacement } = useFurniturePlacement();
 
     return (
         <Canvas camera={{ position: [5, 5, 5] }}>
             <ambientLight intensity={0.5} />
             <OrbitControls />
-            {placements.map(placement => (
-                <Furniture key={placement.placementId} placement={placement} />
-            ))}
+            {/* InstancedMesh를 통한 고성능 렌더링 */}
         </Canvas>
     );
 };
 ```
 
-## 핵심 기술 요소
-
-### 벡터 연산
-3D 공간에서의 위치와 방향 계산:
-```javascript
-const calculateDistance = (pos1, pos2) => {
-    const vector = new THREE.Vector3();
-    vector.subVectors(pos2, pos1);
-    return vector.length();
-};
-```
-
-### 행렬 변환
-아핀 변환을 통한 3D 변환 처리:
-```javascript
-const createTransformationMatrix = (position, rotation, scale) => {
-    const matrix = new THREE.Matrix4();
-    matrix.compose(position, new THREE.Quaternion().setFromEuler(rotation), scale);
-    return matrix;
-};
-```
-
-### CloudFront CDN
-3D 모델 파일의 효율적인 배포:
-```typescript
-class CloudFrontModelManager {
-    async getModelUrl(modelId: string): Promise<string> {
-        return `https://${this.cloudFrontDomain}/models/${modelId}.obj`;
-    }
-    
-    async uploadModel(modelId: string, modelFile: Buffer): Promise<string> {
-        await this.s3Client.upload({
-            Bucket: this.bucketName,
-            Key: `models/${modelId}.obj`,
-            Body: modelFile,
-            CacheControl: 'public, max-age=31536000'
-        }).promise();
-        
-        return this.getModelUrl(modelId);
-    }
-}
-```
-
 ## 성능 최적화
 
-### 아키텍처 기반 최적화
-
 1. **분산 처리**: 쿠버네티스 포드 엔진에서 도형 연산을 독립적으로 처리
-2. **비동기 통신**: FastAPI를 통한 비동기 작업으로 응답성 향상
-3. **직접 콘텐츠 전달**: React 프론트엔드가 S3(CloudFront CDN)에서 직접 3D 모델 로딩
+2. **가벼운 백엔드 통신**: 변화된 가구의 결과를 직접 파일로 전달하지 않고 matrix 데이터를 구분해 상호작용 
+3. **직접 콘텐츠 전달**: 프론트엔드가 S3(CloudFront CDN)에서 직접 3D 모델 로딩
+4. **InstancedMesh 렌더링**: 동일한 가구 모델의 다중 인스턴스를 단일 드로우 콜로 처리
 
-### 네트워크 최적화
-
-- **메타데이터만 전송**: 위치, 회전, 스케일 정보만 전송하여 네트워크 부하 최소화
-- **CloudFront CDN**: 전 세계 엣지 로케이션을 통한 빠른 모델 로딩
-- **캐싱 전략**: 글로벌 캐싱과 브라우저 로컬 캐싱 활용
 
 ## 결론
 
@@ -217,6 +200,6 @@ class CloudFrontModelManager {
 1. **효율적인 리소스 사용**: 3D 모델을 직접 스트리밍하지 않아 네트워크 부하 감소
 2. **확장 가능한 아키텍처**: 쿠버네티스를 통한 엔진 스케일링
 3. **정확한 도형 연산**: 벡터와 행렬 연산을 통한 정밀한 위치 계산
-4. **실시간 렌더링**: React Three Fiber를 통한 부드러운 3D 렌더링
+4. **고성능 렌더링**: InstancedMesh와 Transformation Matrix를 통한 최적화된 3D 렌더링
 
 이러한 접근 방식을 통해 대용량 3D 데이터를 효율적으로 처리하면서도 사용자에게 풍부한 3D 경험을 제공할 수 있습니다.
