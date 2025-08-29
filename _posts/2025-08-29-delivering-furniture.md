@@ -10,6 +10,8 @@ hidden: false
 # toc: true
 ---
 
+
+<img src="/assets/images/delivering-furniture/thumbnail.png" style="width: 800px; max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; align-items: center;">
 ## 개요
 쿠버네티스 포드 엔진에서 도형 연산을 통해 가구의 최적 위치를 계산하고, 백엔드에서 이 정보를 받아 프론트엔드에서 Three.js를 사용하여 3D 모델을 배치하는 작업이 필요했습니다. 3D 모델을 직접 스트리밍하지 않고 메타데이터만 전송하여 효율성을 극대화했습니다.
 
