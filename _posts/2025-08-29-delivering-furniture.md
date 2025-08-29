@@ -33,35 +33,44 @@ hidden: false
 
 ### 1. 쿠버네티스 포드 엔진 (도형 연산)
 
-벡터와 행렬 연산을 통한 가구 배치 최적화:
+벡터와 행렬 연산을 통한 가구 배치 최적화: 가구 배치 결과와 plane 결과를 저장하는 것을 목적으로 합니다.
 
 ```python
+from dataclasses import dataclass
+from typing import List, Tuple
+
 @dataclass
-class Position3D:
-    x: float; y: float; z: float
+class Plane:
+    origin: Tuple[float, float, float]
+    x_axis: Tuple[float, float, float]
+    y_axis: Tuple[float, float, float]
 
 @dataclass
 class FurniturePlacement:
     furniture_type: str
-    position: Position3D
-    rotation: Position3D  # degrees
-    scale: Position3D
-    confidence_score: float
+    name: str
+    original_plane: Plane
+    plane: Plane
 
 class FurniturePlacementEngine:
 
     ...
-                
-                placement = FurniturePlacement(
-                    furniture_type=furniture_type,
-                    position=final_transform['position'],
-                    rotation=final_transform['rotation'],
-                    scale=final_transform['scale'],
-                    confidence_score=confidence_score
-                )
-                all_placements.append(placement)
+
+    def calculate_optimal_placement(...) -> List[FurniturePlacement]:
+        """
+        방 크기와 가구 타입을 기반으로 최적의 배치 위치를 계산
+        """
+        all_placements: List[FurniturePlacement] = []
         
-        return sorted(all_placements, key=lambda p: p.confidence_score, reverse=True)
+        ...
+
+            all_placements.append(placement)
+        
+        ...
+
+        return all_placements
+    
+    ...
 ```
 
 ### 2. 백엔드 API
@@ -81,115 +90,64 @@ class FurniturePlacementEngine:
 
 이러한 분리된 구조를 통해 사용자는 즉시 응답을 받고, 프론트엔드에서는 주기적으로 결과를 확인하여 완료 시 3D 렌더링을 수행합니다.
 
-### 3. 프론트엔드 (Transformation Matrix 데이터를 받아 InstancedMesh 로 적용)
+### 3. 프론트엔드 (Transformation Matrix 데이터를 받아 InstancedMesh로 적용)
 
 **InstancedMesh와 Transformation Matrix를 활용한 최적화된 3D 렌더링:**
 
 ```typescript
-import { Canvas } from '@react-three/fiber';
-import * as THREE from 'three';
 
-class FurniturePlacementRenderer {
-    private objectCache: { [key: string]: THREE.Object3D } = {};
-    private instancedMeshes: { [key: string]: THREE.InstancedMesh[] } = {};
-    private instancedMeshWireframes: { [key: string]: THREE.InstancedMesh[] } = {};
-    private instanceMatrices: { [key: string]: THREE.Matrix4[] } = {};
+...
 
-    // 배치 업데이트 - Transformation Matrix 기반 변환
-    private updatePlacement(placement: Placement) {
-        const { name, original_plane, plane } = placement;
-
-        // 객체 로딩 확인
-        if (!this.objectCache[name]) {
-            console.warn(`Object ${name} not loaded yet`);
-            return;
-        }
-
-        // 변환 행렬 생성
-        const originalMatrix = new THREE.Matrix4();
-        const targetMatrix = new THREE.Matrix4();
-
-        // 원본 평면 행렬 설정
-        originalMatrix.set(
-            original_plane.x_axis[0], original_plane.y_axis[0], 0, original_plane.origin[0],
-            original_plane.x_axis[1], original_plane.y_axis[1], 0, original_plane.origin[1],
-            0, 0, 1, 0,
-            0, 0, 0, 1
-        );
-
-        // 타겟 평면 행렬 설정
-        targetMatrix.set(
-            plane.x_axis[0], plane.y_axis[0], 0, plane.origin[0],
-            plane.x_axis[1], plane.y_axis[1], 0, plane.origin[1],
-            0, 0, 1, 0,
-            0, 0, 0, 1
-        );
-
-        // 원본에서 타겟으로의 변환 행렬 계산
-        const originalInverse = originalMatrix.clone().invert();
-        const transformationMatrix = targetMatrix.clone().multiply(originalInverse);
-
-        // 인스턴스 행렬 배열 초기화
-        if (!this.instanceMatrices[name]) {
-            this.instanceMatrices[name] = [];
-        }
-
-        // 변환 행렬을 배열에 추가
-        this.instanceMatrices[name].push(transformationMatrix);
-
-        // 모든 인스턴스 행렬 업데이트
-        this.instancedMeshes[name].forEach(instancedMesh => {
-            this.instanceMatrices[name].forEach((matrix, index) => {
-                instancedMesh.setMatrixAt(index, matrix);
-            });
-            instancedMesh.instanceMatrix.needsUpdate = true;
-        });
-
-        // 와이어프레임 인스턴스도 동일하게 업데이트
-        this.instancedMeshWireframes[name].forEach(instancedMeshWireframe => {
-            this.instanceMatrices[name].forEach((matrix, index) => {
-                instancedMeshWireframe.setMatrixAt(index, matrix);
-            });
-            instancedMeshWireframe.instanceMatrix.needsUpdate = true;
-        });
-    }
-
-    // API 서비스 훅
-    const useFurniturePlacement = () => {
-        const requestPlacement = useCallback(async (request) => {
-            const { jobId } = await fetch('/api/furniture/placement', {
-                method: 'POST',
-                body: JSON.stringify(request)
-            }).then(res => res.json());
-            
-            // 결과 폴링
-            return await pollForResult(jobId);
-        }, []);
-        
-        return { requestPlacement };
-    };
+interface Plane {
+    origin: [number, number, number];
+    x_axis: [number, number, number];
+    y_axis: [number, number, number];
 }
 
-// 메인 컴포넌트
-const FurniturePlacementApp = () => {
-    const [placements, setPlacements] = useState([]);
-    const { requestPlacement } = useFurniturePlacement();
+...
 
-    return (
-        <Canvas camera={{ position: [5, 5, 5] }}>
-            <ambientLight intensity={0.5} />
-            <OrbitControls />
-            {/* InstancedMesh를 통한 고성능 렌더링 */}
-        </Canvas>
+    // Create transformation matrices
+    const originalMatrix = new THREE.Matrix4();
+    const targetMatrix = new THREE.Matrix4();
+
+    // Set up the original plane matrix
+    originalMatrix.set(
+      original_plane.x_axis[0], original_plane.y_axis[0], 0, original_plane.origin[0],
+      original_plane.x_axis[1], original_plane.y_axis[1], 0, original_plane.origin[1],
+      0, 0, 1, 0,
+      0, 0, 0, 1
     );
-};
+
+    // Set up the target plane matrix
+    targetMatrix.set(
+      plane.x_axis[0], plane.y_axis[0], 0, plane.origin[0],
+      plane.x_axis[1], plane.y_axis[1], 0, plane.origin[1],
+      0, 0, 1, 0,
+      0, 0, 0, 1
+    );
+
+    // Calculate the transformation from original to target
+    const originalInverse = originalMatrix.clone().invert();
+    const transformationMatrix = targetMatrix.clone().multiply(originalInverse);
+
+    // Initialize arrays if they don't exist
+    if (!this.instanceMatrices[name]) {
+      this.instanceMatrices[name] = [];
+    }
+
+    // Add the transformation matrix to our array
+    this.instanceMatrices[name].push(transformationMatrix);
+
+...
+
+
 ```
 
 ## 성능 최적화
 
 1. **분산 처리**: 쿠버네티스 포드 엔진에서 도형 연산을 독립적으로 처리
-2. **가벼운 백엔드 통신**: 변화된 가구의 결과를 직접 파일로 전달하지 않고 matrix 데이터를 구분해 상호작용 
-3. **직접 콘텐츠 전달**: 프론트엔드가 S3(CloudFront CDN)에서 직접 3D 모델 로딩
+2. **가벼운 백엔드 통신**: 변화된 가구의 결과를 직접 파일로 전달하지 않고 Transformation Matrix 데이터를 구분해 상호작용 
+3. **3D 파일 간접 전달**: 프론트엔드가 S3(CloudFront CDN)에서 3D 모델 로딩
 4. **InstancedMesh 렌더링**: 동일한 가구 모델의 다중 인스턴스를 단일 드로우 콜로 처리
 
 
@@ -197,7 +155,7 @@ const FurniturePlacementApp = () => {
 
 이 시스템을 통해 다음과 같은 이점을 얻을 수 있습니다:
 
-1. **효율적인 리소스 사용**: 3D 모델을 직접 스트리밍하지 않아 네트워크 부하 감소
+1. **효율적인 리소스 사용**: 3D 모델을 직접 스트리밍하지 않아 메인 서버의 네트워크 부하 감소
 2. **확장 가능한 아키텍처**: 쿠버네티스를 통한 엔진 스케일링
 3. **정확한 도형 연산**: 벡터와 행렬 연산을 통한 정밀한 위치 계산
 4. **고성능 렌더링**: InstancedMesh와 Transformation Matrix를 통한 최적화된 3D 렌더링
