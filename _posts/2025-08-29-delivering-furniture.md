@@ -2,8 +2,8 @@
 layout: post
 title: "가구를 배달해보자"
 thumbnail: /assets/images/delivering-furniture/thumbnail.png
-categories: [three.js]
-tags: [kubernetes, three.js, 3d-rendering, vector, matrix, affine-transformation]  # red, yellow
+categories: []
+tags: []  # red, yellow
 featured: false
 hidden: false
 # beforetoc: "쿠버네티스 포드 엔진에서 도형 연산을 통한 가구 배치 계산부터 Three.js 프론트엔드 렌더링까지"
