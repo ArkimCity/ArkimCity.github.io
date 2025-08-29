@@ -13,9 +13,9 @@ hidden: false
 ## 개요
 쿠버네티스 포드 엔진에서 도형 연산을 통해 가구의 최적 위치를 계산하고, 백엔드에서 이 정보를 받아 프론트엔드에서 Three.js를 사용하여 3D 모델을 배치하는 작업이 필요했습니다. 3D 모델을 직접 스트리밍하지 않고 메타데이터만 전송하여 효율성을 극대화했습니다.
 
-## 핵심 아키텍처
+## 구조
 
-<img src="/assets/images/delivering-furniture/architecture.png"/>
+<img src="/assets/delivering-furniture/architecture.png"/>
 시스템 아키텍처 다이어그램
 
 시스템은 다음과 같은 계층 구조로 구성됩니다:
