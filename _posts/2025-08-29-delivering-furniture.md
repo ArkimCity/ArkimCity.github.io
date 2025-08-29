@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "프론트까지 가구를 배달해보자"
-thumbnail: /assets/delivering-furniture/thumbnail.png
+title: "가구를 배달해보자"
+thumbnail: /assets/images/delivering-furniture/thumbnail.png
 categories: [three.js]
 tags: [kubernetes, three.js, 3d-rendering, vector, matrix, affine-transformation]  # red, yellow
 featured: false
@@ -15,8 +15,10 @@ hidden: false
 
 ## 구조
 
-<img src="/assets/delivering-furniture/architecture.png"/>
-시스템 아키텍처 다이어그램
+<div style="width: 800px; max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; align-items: center;">
+    <img src="/assets/images/delivering-furniture/structure.png" style="max-width: 100%;">
+    <div style="font-size: 10px; color: #808080; margin-top: 5px;">구조 다이어그램</div>
+</div>
 
 시스템은 다음과 같은 계층 구조로 구성됩니다:
 
