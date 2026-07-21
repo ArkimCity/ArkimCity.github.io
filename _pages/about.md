@@ -190,7 +190,7 @@ comments: false
 
 <h4>Intern - (2020.01 ~ 02)</h4>
 <ul>
-    <li>Supported the concept, planning, diagrams, and panel image production for the Hahngnam Gyeosan 3rd New Town masterplan competition and contributed to a 3rd-prize result.</li>
+    <li>Supported the concept, planning, diagrams, and panel image production for the Hanam Gyosan 3rd New Town masterplan competition and contributed to a 3rd-prize result.</li>
 </ul>
 
 <hr>
