@@ -6,6 +6,15 @@ comments: false
 ---
 
 <style>
+body .site-content {
+    padding-top: 0.25rem !important;
+    margin-top: 48px !important;
+}
+
+body .mainheading {
+    display: none !important;
+}
+
 .article-post h2 {
     font-size: 1.5rem !important;
     margin-top: 2rem !important;
