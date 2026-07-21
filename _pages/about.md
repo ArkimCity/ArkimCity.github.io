@@ -29,7 +29,82 @@ comments: true
     margin-top: 1rem !important;
     margin-bottom: 0.5rem !important;
 }
+
+.cv-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+}
+
+.cv-actions button {
+    border: none;
+    background: #2c3e50;
+    color: #fff;
+    padding: 0.5rem 0.9rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+@media print {
+    .navbar,
+    .language-switch,
+    .cv-actions,
+    .comments,
+    .footer,
+    .share,
+    .search {
+        display: none !important;
+    }
+
+    body {
+        background: #fff !important;
+    }
+
+    .article-post {
+        padding: 0 !important;
+    }
+
+    .article-post h2 {
+        font-size: 1.3rem !important;
+        margin-top: 1rem !important;
+        margin-bottom: 0.6rem !important;
+    }
+
+    .article-post h3 {
+        font-size: 1.05rem !important;
+        margin-top: 0.8rem !important;
+        margin-bottom: 0.3rem !important;
+    }
+
+    .article-post h4 {
+        font-size: 0.95rem !important;
+        margin-top: 0.6rem !important;
+        margin-bottom: 0.2rem !important;
+    }
+
+    a {
+        color: #000 !important;
+        text-decoration: none !important;
+    }
+
+    .row,
+    .col-md-8 {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    @page {
+        size: A4;
+        margin: 12mm;
+    }
+}
 </style>
+
+<div class="cv-actions">
+    <button type="button" onclick="window.print()">Print / Save as PDF</button>
+</div>
 
 <div class="row justify-content-between">
 <div class="col-md-8 pr-5">
