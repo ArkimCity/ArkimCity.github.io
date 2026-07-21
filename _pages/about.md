@@ -97,7 +97,7 @@ comments: false
 
     @page {
         size: A4;
-        margin: 0mm;
+        margin: 12mm;
     }
 }
 </style>
