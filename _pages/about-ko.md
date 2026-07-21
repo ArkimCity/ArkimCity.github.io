@@ -2,7 +2,7 @@
 layout: page
 title: Jaeung Kim - 김재웅
 permalink: /about-ko
-comments: true
+comments: false
 ---
 
 <style>
@@ -97,7 +97,7 @@ comments: true
 
     @page {
         size: A4;
-        margin: 12mm;
+        margin: 4mm;
     }
 }
 </style>
